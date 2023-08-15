@@ -1,6 +1,6 @@
 import express from "express";
 import homeCtroll from "../controller/home.controller"; 
-
+var userCtro = require('../controller/user.controller')
 const router = express.Router();
 
 /**
@@ -18,6 +18,8 @@ const initWebRouter = (app) =>{
     router.get("/user",homeCtroll.handelUserPage);
     router.post("/users.create-user",homeCtroll.handelCreateUser);
     router.post("/dele-user/:id",homeCtroll.handelDeleleUser);
+    router.get('/reg',userCtro.reg);
+    router.post('/reg',userCtro.reg);
 
     return app.use("/",router);
 }
