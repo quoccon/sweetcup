@@ -1,0 +1,64 @@
+<%- include('../../inc/header.ejs') %>
+
+<div class="row">
+    <div class="user-infor-container">
+
+        <form method="POST" action="">
+
+            <div class="mb3">Create new user:</div>
+            <div class="mb-3 mt-3 col-6">
+                <label for="email" class="form-label">Email address</label>
+                <input name="email" type="email" class="form-control" id="email" required>
+            </div>
+            <div class="col-6"></div>
+            <div class="mb-3 col-6">
+                <label for="password" class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" id="password" required>
+            </div>
+            <div class="col-6"></div>
+            <div class="col-6 pb-3">
+                <label for="username" class="form-label">UserName</label>
+                <input name="username" type="password" class="form-control" id="username" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
+
+    <div class="table-user mt-3">
+        <h3>Table User</h3>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">UserName</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% listU.forEach(function(item,index){ %>
+                        <tr>
+                            <th scope="row"><%= item.id %></th>
+                            <td><%= item.email %> </td>
+                            <td><%= item.username %> </td>
+                            <td>
+                                <button class="btn btn-warning">Edit</button>
+                                <form action="/dele-user/<%=item.id%>" method="POST" type="submit" style="display: inline;">
+                                    <button class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                <%}) %>
+               
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<%- include('../../inc/footer.ejs') %>
