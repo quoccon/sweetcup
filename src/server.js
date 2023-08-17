@@ -4,6 +4,8 @@ import initWebRouter from "./router/web";
 require("dotenv").config();
 import bodyParser from "body-parser";
 
+const session = require('express-session');
+
 
 
 const app = express();
@@ -15,6 +17,11 @@ configViewEngine(app);
 //config body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));   
+app.use(session({
+    secret: 'kjasfiuhsjvbiub8ew8fbffy7f3vds',
+    resave: true,
+    saveUninitialized: true
+  }));
 
 //init web router
 initWebRouter(app);
