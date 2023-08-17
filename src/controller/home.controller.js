@@ -14,6 +14,10 @@ const handelUserPage =  async (req,res) => {
     return res.render("user.ejs",{userList});
 }
 
+// const handelProductPage = async (req,res) => {
+//     let listPro = await userService
+// }
+
 const handelCreateUser = (req, res) => {
     let email = req.body.email;
     let password = req.body.password;

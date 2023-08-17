@@ -1,6 +1,7 @@
 import express from "express";
 import homeCtroll from "../controller/home.controller"; 
 var userCtro = require('../controller/user.controller')
+var productCtroll = require('../controller/product.controller');
 var checkLogin = require('../middleware/checkLogin')
 const router = express.Router();
 
@@ -26,6 +27,9 @@ const initWebRouter = (app) =>{
     router.get('/reg',userCtro.reg);
     router.post('/reg',userCtro.reg);
 
+
+    //product
+    router.get("/product",productCtroll.getListProduct);
     return app.use("/",router);
 }
 

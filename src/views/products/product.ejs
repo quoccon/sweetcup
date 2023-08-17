@@ -1,4 +1,4 @@
-<% include('../inc/header.ejs') %>
+<%- include('../inc/header.ejs') %>
 
 <div class="row">
     <div class="user-infor-container">
@@ -12,6 +12,10 @@
                     <input type="text" class="form-control" id="productName" name="productName" required>
                   </div>
                   <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" class="form-control" id="price" name="price" required>
+                  </div>
+                  <div class="mb-3">
                     <label for="productImage" class="form-label">Product Image</label>
                     <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required>
                   </div>
@@ -22,48 +26,40 @@
     </div>
 
 
+    
     <div class="table-user mt-3">
-        <div class="col-12">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Action</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <% products.forEach(function(product) { %>
+        <h3>Table User</h3>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">ProductName</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Image</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% listSp.forEach(function(item,index){ %>
                         <tr>
-                            <th scope="row">
-                                <%= product._id %>
-                            </th>
-                            <td> <a href="/products/detail/<%= product._id %>">
-                                    <%= product.nameproduct %>
-                                </a></td>
+                            <th scope="row"><%= item.id %></th>
+                            <td><%= item.nameproduct %> </td>
+                            <td><%= item.price %> </td>
+                            <td><%= item.image %> </td>
                             <td>
-                                <%= product.price%>
-                            </td>
-                            <td>
-                                <%= product.image%>
-                            </td>
-                            <td>
-                                <a href="/products/edit/<%= product._id %>" class="btn bg-success-subtle">Edit</a>
-                                <a href="/products/delete/<%= product._id %>" class="btn bg-dark-subtle">Delete</a>
-
+                                <button class="btn btn-warning">Edit</button>
+                                <form action="/dele-product/<%=item.id%>" method="POST" type="submit" style="display: inline;">
+                                    <button class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
-                        <% }); %>
-
-
-
-                </tbody>
-            </table>
-        </div>
+                <%}) %>
+               
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<% include('../inc/footer.ejs') %>
+<%- include('../inc/footer.ejs') %>
