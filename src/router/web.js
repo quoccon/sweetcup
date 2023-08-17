@@ -4,6 +4,8 @@ var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
 var checkLogin = require('../middleware/checkLogin')
 const router = express.Router();
+var multer = require('multer');
+var objUpload = multer({ dest: './tmp' });
 
 /**
  * 
@@ -21,9 +23,9 @@ const initWebRouter = (app) =>{
     router.get("/home",checkLogin.ycLogin, homeCtroll.handelHelloWorld);
     router.get("/home-tam",homeCtroll.handelUserPage);
     router.get("/user",userCtro.getAllUsers);
-    // router.get("/user",homeCtroll.handelUserPage);
-    router.post("/users.create-user",homeCtroll.handelCreateUser);
-    router.post("/dele-user/:id",homeCtroll.handelDeleleUser);
+    router.post("/user/submit-form",objUpload.single("avata"),userCtro.addUser);
+    
+    
     router.get('/reg',userCtro.reg);
     router.post('/reg',userCtro.reg);
 
