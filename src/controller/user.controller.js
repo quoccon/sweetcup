@@ -106,3 +106,59 @@ exports.addUser = async (req, res, next) => {
 
   res.redirect("/user");
 };
+
+
+exports.editU = async (req,res,next)=>{
+  var idu = req.params.idu;
+  console.log(idu);
+  if (req.method == 'POST') {
+    const destinationPath = path.join(
+      __dirname,
+      "../public/templates"
+    );
+    const tempFilePath = req.file.path;
+
+    fs.rename(
+      tempFilePath,
+      path.join(destinationPath, req.file.originalname),
+      (err) => {
+        if (err) {
+          console.log(err);
+        } else
+          console.log(
+            "Url: http://localhost:8080/templates/" +
+              req.file.originalname +
+              "Chuyển OKe"
+          );
+      }
+    );
+    var objU = new myMD.userModel();
+    objU.username = req.body.username;
+    objU.email = req.body.email;
+    objU.password = req.body.pwwd1;
+    objU.avata = "http://localhost:8080/templates/" + req.file.originalname;
+    objU._id= idu;
+
+    try {
+      await myMD.userModel.updateOne({_id: idu},objU)
+      console.log('Update thành công')
+      res.redirect('/user')
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+}
+
+exports.deleteU = async (req,res,next) => {
+  var idu = req.params.idu;
+  console.log(idu)
+
+  try {
+    await myMD.userModel.deleteOne({_id:idu})
+    res.redirect('/user')
+  } catch (error) {
+    console.log(error)
+  }
+}

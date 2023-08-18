@@ -32,7 +32,11 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form method="post" action="/user/submit-form" enctype="multipart/form-data">
+          <form
+            method="post"
+            action="/user/submit-form"
+            enctype="multipart/form-data"
+          >
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label"
                 >Tên Đăng Nhập</label
@@ -79,22 +83,24 @@
               <input type="file" name="avata" />
             </div>
             <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Hủy
-                </button>
-                <button type="submit" class="btn btn-primary">Thêm</button>
-              </div>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Hủy
+              </button>
+              <button type="submit" class="btn btn-primary">Thêm</button>
+            </div>
           </form>
         </div>
-        
       </div>
     </div>
   </div>
+  
 
+  
+  <!-- =====================List User==================================== -->
   <div class="table-user mt-3">
     <h3>Table User</h3>
     <table class="table table-hover table-bordered">
@@ -113,9 +119,17 @@
           <td><%= item.email %></td>
           <td><%= item.username %></td>
           <td>
-            <button class="btn btn-warning">Edit</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#editU-btn"
+              data-bs-whatever="@getbootstrap"
+            >
+              Edit
+            </button>
             <form
-              action="/dele-user/<%=item.id%>"
+              action="/user/dele-user/<%=item.id%>"
               method="POST"
               type="submit"
               style="display: inline"
@@ -124,6 +138,92 @@
             </form>
           </td>
         </tr>
+        <div
+    class="modal fade"
+    id="editU-btn"
+    tabindex="-1"
+    aria-labelledby="editU-btn"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="editU-btn">
+            Thêm Người Dùng
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form
+            method="post"
+            action="/user/edit-user/<%= item.id %>"
+            enctype="multipart/form-data"
+          >
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label"
+                >Tên Đăng Nhập</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="username"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Mật Khẩu</label>
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="pwwd1"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label"
+                >Nhập Lại Mật Khẩu</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="pwwd2"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="avata-user" class="form-label">Hình ảnh</label>
+
+              <input type="file" name="avata" />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Hủy
+              </button>
+              <button type="submit" class="btn btn-primary">Thêm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
         <%}) %>
       </tbody>
     </table>

@@ -24,6 +24,8 @@ const initWebRouter = (app) =>{
     router.get("/home-tam",homeCtroll.handelUserPage);
     router.get("/user",userCtro.getAllUsers);
     router.post("/user/submit-form",objUpload.single("avata"),userCtro.addUser);
+    router.post("/user/dele-user/:idu",userCtro.deleteU);
+    router.post("/user/edit-user/:idu",objUpload.single("avata"),userCtro.editU);
     
     
     router.get('/reg',userCtro.reg);
