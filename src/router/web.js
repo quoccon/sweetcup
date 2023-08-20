@@ -3,6 +3,7 @@ var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
 var homeCtroll = require('../controller/home.controller')
 var checkLogin = require('../middleware/checkLogin')
+var apiU = require('../controller/API/use.api')
 
 const router = express.Router();
 var multer = require('multer');
@@ -29,6 +30,10 @@ const initWebRouter = (app) =>{
     router.post("/user/dele-user/:idu",userCtro.deleteU);
     router.post("/user/edit-user/:idu",objUpload.single("avata"),userCtro.editU);
     router.post("/user/sreach",userCtro.getAllUsers);
+    router.get("/api/user",apiU.api_listU);
+    router.post("/api/reg",apiU.api_Reg);
+    router.post("/api/editU/:idu",apiU.api_edit);
+
     
     
     
