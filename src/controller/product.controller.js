@@ -52,14 +52,14 @@ exports.add= async(req, res, next)=>{
 
 
 exports.deleteProduct = async (req, res, next) => {
-    let idSp = req.params.idSp;
-    let mgs = "";
-    try {
-        await myMD.productModel.deleteOne({_id: idSp});
-        mgs = "Đã xóa sản phẩm";
-    } catch (error) {
-        mgs = "Xóa không thành công" +error.message;
-    }
+    var idPro = req.params.idPro;
+    console.log(idPro);
 
-    res.render("product/delete-product",{mgs:mgs})
+
+    try {
+        await myMD.productModel.findOne({_id:idPro})
+        res.redirect('/product')
+    } catch (error) {
+        console.log(error);
+    }
 }

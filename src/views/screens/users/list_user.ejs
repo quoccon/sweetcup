@@ -1,64 +1,133 @@
 <%- include('../../inc/header.ejs') %>
 
 <div class="row">
-    <div class="user-infor-container">
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+    data-bs-whatever="@getbootstrap"
+  >
+    Add User
+  </button>
 
-        <form method="POST" action="">
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Thêm Người Dùng
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="/user/submit-form" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label"
+                >Tên Đăng Nhập</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="username"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Mật Khẩu</label>
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="pwwd1"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label"
+                >Nhập Lại Mật Khẩu</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="recipient-name"
+                name="pwwd2"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="avata-user" class="form-label">Hình ảnh</label>
 
-            <div class="mb3">Create new user:</div>
-            <div class="mb-3 mt-3 col-6">
-                <label for="email" class="form-label">Email address</label>
-                <input name="email" type="email" class="form-control" id="email" required>
+              <input type="file" name="avata" />
             </div>
-            <div class="col-6"></div>
-            <div class="mb-3 col-6">
-                <label for="password" class="form-label">Password</label>
-                <input name="password" type="password" class="form-control" id="password" required>
-            </div>
-            <div class="col-6"></div>
-            <div class="col-6 pb-3">
-                <label for="username" class="form-label">UserName</label>
-                <input name="username" type="password" class="form-control" id="username" required>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-
-        </form>
+            <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Hủy
+                </button>
+                <button type="submit" class="btn btn-primary">Thêm</button>
+              </div>
+          </form>
+        </div>
+        
+      </div>
     </div>
+  </div>
 
-
-    <div class="table-user mt-3">
-        <h3>Table User</h3>
-        <table class="table table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">UserName</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% listU.forEach(function(item,index){ %>
-                        <tr>
-                            <th scope="row"><%= item.id %></th>
-                            <td><%= item.email %> </td>
-                            <td><%= item.username %> </td>
-                            <td>
-                                <button class="btn btn-warning">Edit</button>
-                                <form action="/dele-user/<%=item.id%>" method="POST" type="submit" style="display: inline;">
-                                    <button class="btn btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                <%}) %>
-               
-            </tbody>
-        </table>
-    </div>
+  <div class="table-user mt-3">
+    <h3>Table User</h3>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Email</th>
+          <th scope="col">UserName</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% listU.forEach(function(item,index){ %>
+        <tr>
+          <th scope="row"><%= item.id %></th>
+          <td><%= item.email %></td>
+          <td><%= item.username %></td>
+          <td>
+            <button class="btn btn-warning">Edit</button>
+            <form
+              action="/dele-user/<%=item.id%>"
+              method="POST"
+              type="submit"
+              style="display: inline"
+            >
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <%}) %>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <%- include('../../inc/footer.ejs') %>
