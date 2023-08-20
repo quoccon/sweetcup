@@ -1,7 +1,9 @@
 import express from "express";
 var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
+var homeCtroll = require('../controller/home.controller')
 var checkLogin = require('../middleware/checkLogin')
+
 const router = express.Router();
 var multer = require('multer');
 var objUpload = multer({ dest: './tmp' });
