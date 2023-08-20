@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import homeCtroll from "../controller/home.controller"; 
 var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
@@ -18,18 +18,24 @@ const handelHelloWorld = (req, res) =>{
 
 
 const initWebRouter = (app) =>{
+    // ==============auth Router===========================
     router.get("/",userCtro.login);
     router.post("/", userCtro.login);
+    router.get('/reg',userCtro.reg);
+    router.post('/reg',userCtro.reg);
+    router.post('/loguot',userCtro.logUot)
     router.get("/home",checkLogin.ycLogin, homeCtroll.handelHelloWorld);
     router.get("/home-tam",homeCtroll.handelUserPage);
+    // ==============User Router===========================
     router.get("/user",userCtro.getAllUsers);
     router.post("/user/submit-form",objUpload.single("avata"),userCtro.addUser);
     router.post("/user/dele-user/:idu",userCtro.deleteU);
     router.post("/user/edit-user/:idu",objUpload.single("avata"),userCtro.editU);
+    router.post("/user/sreach",userCtro.getAllUsers);
     
     
-    router.get('/reg',userCtro.reg);
-    router.post('/reg',userCtro.reg);
+    
+    
 
 
     //product
