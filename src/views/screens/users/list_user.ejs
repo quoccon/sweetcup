@@ -1,133 +1,508 @@
 <%- include('../../inc/header.ejs') %>
+<style>
+  .user-list tbody td > img {
+    position: relative;
+    max-width: 50px;
+    float: left;
+    margin-right: 15px;
+  }
+  .user-list tbody td .user-link {
+    display: block;
+    font-size: 1.25em;
+    padding-top: 3px;
+    margin-left: 60px;
+  }
+  .user-list tbody td .user-subhead {
+    font-size: 0.875em;
+    font-style: italic;
+  }
 
-<div class="row">
-  <button
-    type="button"
-    class="btn btn-primary"
-    data-bs-toggle="modal"
-    data-bs-target="#exampleModal"
-    data-bs-whatever="@getbootstrap"
-  >
-    Add User
-  </button>
+  /* TABLES */
+  .table {
+    border-collapse: separate;
+  }
+  .table-hover > tbody > tr:hover > td,
+  .table-hover > tbody > tr:hover > th {
+    background-color: #eee;
+  }
+  .table thead > tr > th {
+    border-bottom: 1px solid #c2c2c2;
+    padding-bottom: 0;
+  }
+  .table tbody > tr > td {
+    font-size: 0.875em;
+    background: #f5f5f5;
+    border-top: 10px solid #fff;
+    vertical-align: middle;
+    padding: 12px 8px;
+  }
+  .table tbody > tr > td:first-child,
+  .table thead > tr > th:first-child {
+    padding-left: 20px;
+  }
+  .table thead > tr > th span {
+    border-bottom: 2px solid #c2c2c2;
+    display: inline-block;
+    padding: 0 5px;
+    padding-bottom: 5px;
+    font-weight: normal;
+  }
+  .table thead > tr > th > a span {
+    color: #344644;
+  }
+  .table thead > tr > th > a span:after {
+    content: "\f0dc";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    margin-left: 5px;
+    font-size: 0.75em;
+  }
+  .table thead > tr > th > a.asc span:after {
+    content: "\f0dd";
+  }
+  .table thead > tr > th > a.desc span:after {
+    content: "\f0de";
+  }
+  .table thead > tr > th > a:hover span {
+    text-decoration: none;
+    color: #2bb6a3;
+    border-color: #2bb6a3;
+  }
+  .table.table-hover tbody > tr > td {
+    -webkit-transition: background-color 0.15s ease-in-out 0s;
+    transition: background-color 0.15s ease-in-out 0s;
+  }
+  .table tbody tr td .call-type {
+    display: block;
+    font-size: 0.75em;
+    text-align: center;
+  }
+  .table tbody tr td .first-line {
+    line-height: 1.5;
+    font-weight: 400;
+    font-size: 1.125em;
+  }
+  .table tbody tr td .first-line span {
+    font-size: 0.875em;
+    color: #969696;
+    font-weight: 300;
+  }
+  .table tbody tr td .second-line {
+    font-size: 0.875em;
+    line-height: 1.2;
+  }
+  .table a.table-link {
+    margin: 0 5px;
+    font-size: 1.125em;
+  }
+  .table a.table-link:hover {
+    text-decoration: none;
+    color: #2aa493;
+  }
+  .table a.table-link.danger {
+    color: #fe635f;
+  }
+  .table a.table-link.danger:hover {
+    color: #dd504c;
+  }
 
-  <div
-    class="modal fade"
-    id="exampleModal"
-    tabindex="-1"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">
-            Thêm Người Dùng
-          </h1>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <form method="post" action="/user/submit-form" enctype="multipart/form-data">
-            <div class="mb-3">
-              <label for="recipient-name" class="col-form-label"
-                >Tên Đăng Nhập</label
+  .table-products tbody > tr > td {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ebebeb;
+    -webkit-transition: background-color 0.15s ease-in-out 0s;
+    transition: background-color 0.15s ease-in-out 0s;
+    position: relative;
+  }
+  .table-products tbody > tr:hover > td {
+    text-decoration: none;
+    background-color: #f6f6f6;
+  }
+  .table-products .name {
+    display: block;
+    font-weight: 600;
+    padding-bottom: 7px;
+  }
+  .table-products .price {
+    display: block;
+    text-decoration: none;
+    width: 50%;
+    float: left;
+    font-size: 0.875em;
+  }
+  .table-products .price > i {
+    color: #8dc859;
+  }
+  .table-products .warranty {
+    display: block;
+    text-decoration: none;
+    width: 50%;
+    float: left;
+    font-size: 0.875em;
+  }
+  .table-products .warranty > i {
+    color: #f1c40f;
+  }
+  .table tbody > tr.table-line-fb > td {
+    background-color: #9daccb;
+    color: #262525;
+  }
+  .table tbody > tr.table-line-twitter > td {
+    background-color: #9fccff;
+    color: #262525;
+  }
+  .table tbody > tr.table-line-plus > td {
+    background-color: #eea59c;
+    color: #262525;
+  }
+  .table-stats .status-social-icon {
+    font-size: 1.9em;
+    vertical-align: bottom;
+  }
+  .table-stats .table-line-fb .status-social-icon {
+    color: #556484;
+  }
+  .table-stats .table-line-twitter .status-social-icon {
+    color: #5885b8;
+  }
+  .table-stats .table-line-plus .status-social-icon {
+    color: #a75d54;
+  }
+</style>
+
+<div class="container-fluid">
+  <div class="card">
+    <!-- =====================List User==================================== -->
+    
+    <div class="container">
+      <div class="row align-items-center mt-4">
+      <!-- btn addUser begin -->
+      <div class="col">
+      <button
+        type="button"
+        class="btn  mb-3 btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        data-bs-whatever="@getbootstrap"
+      >
+        Add User
+      </button>
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Thêm Người Dùng
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form
+                method="post"
+                action="/user/submit-form"
+                enctype="multipart/form-data"
               >
-              <input
-                type="text"
-                class="form-control"
-                id="recipient-name"
-                name="username"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">Email</label>
-              <input
-                type="text"
-                class="form-control"
-                id="recipient-name"
-                name="email"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label">Mật Khẩu</label>
-              <input
-                type="text"
-                class="form-control"
-                id="recipient-name"
-                name="pwwd1"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="message-text" class="col-form-label"
-                >Nhập Lại Mật Khẩu</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="recipient-name"
-                name="pwwd2"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="avata-user" class="form-label">Hình ảnh</label>
-
-              <input type="file" name="avata" />
-            </div>
-            <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Hủy
-                </button>
-                <button type="submit" class="btn btn-primary">Thêm</button>
+              <div class="mb-3 d-flex justify-content-center" style="flex-direction:column;align-items: center;">
+                <label for="avata-user" class="form-label">Avata</label>
+                <div class="avatar-upload">
+                  <input type="file" name="avata" id="avata" class="d-none"  onchange="showImagePreview(this)" />
+                  <label for="avata" class="avatar-placeholder">
+                    <img
+                      src="https://img.freepik.com/premium-vector/abyssinian-cat-head-avata_73950-151.jpg"
+                      alt="Hình ảnh"
+                      id="avata-preview"
+                      style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
+                    />
+                  </label>
+                </div>
               </div>
-          </form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label"
+                    >Tên Đăng Nhập</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="recipient-name"
+                    name="username"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label">Email</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="recipient-name"
+                    name="email"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label"
+                    >Mật Khẩu</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="recipient-name"
+                    name="pwwd1"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label"
+                    >Nhập Lại Mật Khẩu</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="recipient-name"
+                    name="pwwd2"
+                  />
+                </div>
+                
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        
       </div>
     </div>
-  </div>
+      
+      <div class="col">
+        <form action="/user/sreach" method="post" class="row">
+      <div class="input-group  mb-3 "  style="max-width: 400px;">
+       
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Tìm kiếm..."
+          aria-label="Tìm kiếm"
+          aria-describedby="search-button"
+          name="sreach"
+        />
+        <button class="btn btn-outline-secondary " type="submit" id="search-button" >
+          Tìm kiếm
+        </button>
+      
+      </div>
+    </form>
+      </div>
+    </div>
+    <!-- btn addUser End -->
+      <!-- list User begining  -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="main-box clearfix">
+            <div class="table-responsive">
+              <table class="table user-list">
+                <thead>
+                  <tr>
+                    <th><span>User</span></th>
+                    <th><span>Created</span></th>
+                    <th class="text-center"><span>Status</span></th>
+                    <th><span>Email</span></th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% listU.forEach(function(item,index){ %>
+                  <tr>
+                    <td>
+                      <img src="<%= item.avata %>" alt="" class="rounded-circle" style="width: 50px; height: 50px;" />
+                      <a href="#" class="user-link"><%= item.username %></a>
+                      <span class="user-subhead">Admin</span>
+                    </td>
+                    <td>2013/08/08</td>
+                    <td class="text-center">
+                      <span class="label label-default">Inactive</span>
+                    </td>
+                    <td>
+                      <a href="#"><%= item.email %></a>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editU-btn"
+                        data-bs-whatever="@getbootstrap"
+                      >
+                        Edit
+                      </button>
+                      <form
+                        action="/user/dele-user/<%=item.id%>"
+                        method="POST"
+                        type="submit"
+                        style="display: inline"
+                      >
+                        <button class="btn btn-danger">Delete</button>
+                      </form>
+                    </td>
+                  </tr>
+                  <div
+                    class="modal fade"
+                    id="editU-btn"
+                    tabindex="-1"
+                    aria-labelledby="editU-btn"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="editU-btn">
+                            Thông tin người dùng
+                          </h1>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div class="modal-body">
+                          <form
+                            method="post"
+                            action="/user/edit-user/<%= item.id %>"
+                            enctype="multipart/form-data"
+                          >
+                          <div class="mb-3 d-flex justify-content-center" style="flex-direction:column;align-items: center;">
+                            <label for="avata-user" class="form-label">Avata</label>
+                            <div class="avatar-upload">
+                              <input type="file" name="avata" id="avata" class="d-none" />
+                              <label for="avata" class="avatar-placeholder">
+                                <img
+                                  src="https://img.freepik.com/premium-vector/abyssinian-cat-head-avata_73950-151.jpg"
+                                  alt="Hình ảnh"
+                                  id="avata-preview"
+                                  style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                            <div class="mb-3">
+                              <label for="recipient-name" class="col-form-label"
+                                >Tên Đăng Nhập</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="recipient-name"
+                                name="username"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label for="message-text" class="col-form-label"
+                                >Email</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="recipient-name"
+                                name="email"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label for="message-text" class="col-form-label"
+                                >Mật Khẩu</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="recipient-name"
+                                name="pwwd1"
+                              />
+                            </div>
+                            <div class="mb-3">
+                              <label for="message-text" class="col-form-label"
+                                >Nhập Lại Mật Khẩu</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="recipient-name"
+                                name="pwwd2"
+                              />
+                            </div>
+                            
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                              >
+                                Hủy
+                              </button>
+                              <button type="submit" class="btn btn-primary">
+                                Edit
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+            <ul class="pagination pull-right">
+              <li>
+                <a href="#"><i class="fa fa-chevron-left"></i></a>
+              </li>
+              <li><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li>
+                <a href="#"><i class="fa fa-chevron-right"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- list User end  -->
+    </div>
 
-  <div class="table-user mt-3">
-    <h3>Table User</h3>
-    <table class="table table-hover table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Email</th>
-          <th scope="col">UserName</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% listU.forEach(function(item,index){ %>
-        <tr>
-          <th scope="row"><%= item.id %></th>
-          <td><%= item.email %></td>
-          <td><%= item.username %></td>
-          <td>
-            <button class="btn btn-warning">Edit</button>
-            <form
-              action="/dele-user/<%=item.id%>"
-              method="POST"
-              type="submit"
-              style="display: inline"
-            >
-              <button class="btn btn-danger">Delete</button>
-            </form>
-          </td>
-        </tr>
-        <%}) %>
-      </tbody>
-    </table>
+    <!-- =============================================== -->
   </div>
 </div>
-
+<script>
+  function showImagePreview(input) {
+    const avatarPreview = document.getElementById("avata-preview");
+    const selectedFile = input.files[0];
+    
+    if (selectedFile) {
+      const reader = new FileReader();
+      
+      reader.onload = function(event) {
+        avatarPreview.src = event.target.result;
+      };
+      
+      reader.readAsDataURL(selectedFile);
+    }
+  }
+</script>
 <%- include('../../inc/footer.ejs') %>

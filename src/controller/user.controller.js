@@ -36,7 +36,7 @@ exports.reg = async (req, res, next) => {
       msg = "Xác nhận password không đúng";
       return res.render("auth/reg", { msg: msg });
     }
-    // nếu có kiểm tra khác thì viết ở đây...
+    
 
     //lưu CSDL
     try {
@@ -45,9 +45,11 @@ exports.reg = async (req, res, next) => {
       objU.password = req.body.passwd;
       objU.email = req.body.email;
 
+
       await objU.save();
       msg = "Đăng ký thành công";
       console.log(objU);
+      res.redirect('/')
     } catch (error) {
       msg = "Lỗi: " + error.message;
     }
@@ -56,6 +58,7 @@ exports.reg = async (req, res, next) => {
   res.render("auth/reg", { msg: msg });
 };
 exports.getAllUsers = async (req, res, next) => {
+  
   var listU = await myMD.userModel.find();
   res.render("../views/screens/users/list_user.ejs", { listU: listU });
 };
@@ -68,6 +71,61 @@ exports.addUser = async (req, res, next) => {
     user = req.session.userLogin.username;
   }
   if (req.method == "POST") {
+
+    if (req.body.avata != null) {
+      const destinationPath = path.join(
+        __dirname,
+        "../public/templates"
+      );
+      const tempFilePath = req.file.path;
+  
+      fs.rename(
+        tempFilePath,
+        path.join(destinationPath, req.file.originalname),
+        (err) => {
+          if (err) {
+            console.log(err);
+          } else
+            console.log(
+              "Url: http://localhost:8080/templates/" +
+                req.file.originalname +
+                "Chuyển OKe"
+            );
+        }
+      );
+    } 
+    var  avataDeffut = "8708602c898397dc25a7b4c800a1cffd.jpg"
+    
+    var objU = new myMD.userModel();
+    objU.username = req.body.username;
+    objU.email = req.body.email;
+    objU.password = req.body.pwwd1;
+   
+    if (req.body.avata !=null) {
+      objU.avata = "http://localhost:8080/templates/" + req.file.originalname;
+    }
+    else { objU.avata = "http://localhost:8080/templates/" + avataDeffut; }
+   
+    
+
+    try {
+      let new_user = await objU.save();
+      console.log(new_user);
+      msg = "Đã Thêm Người Dùng Mới Thành Công";
+    } catch (error) {
+      console.log(error);
+      msg = " lỗi" + error;
+    }
+  }
+
+  res.redirect("/user");
+};
+
+
+exports.editU = async (req,res,next)=>{
+  var idu = req.params.idu;
+  console.log(idu);
+  if (req.method == 'POST') {
     const destinationPath = path.join(
       __dirname,
       "../public/templates"
@@ -93,16 +151,32 @@ exports.addUser = async (req, res, next) => {
     objU.email = req.body.email;
     objU.password = req.body.pwwd1;
     objU.avata = "http://localhost:8080/templates/" + req.file.originalname;
+    objU._id= idu;
 
     try {
-      let new_user = await objU.save();
-      console.log(new_user);
-      msg = "Đã Thêm Người Dùng Mới Thành Công";
+      await myMD.userModel.updateOne({_id: idu},objU)
+      console.log('Update thành công')
+      res.redirect('/user')
     } catch (error) {
-      console.log(error);
-      msg = " lỗi" + error;
+      console.log(error)
     }
+
   }
 
-  res.redirect("/user");
-};
+}
+
+exports.deleteU = async (req,res,next) => {
+  var idu = req.params.idu;
+  console.log(idu)
+
+  try {
+    await myMD.userModel.deleteOne({_id:idu})
+    res.redirect('/user')
+  } catch (error) {
+    console.log(error)
+  }
+}
+exports.logUot = async(req,res,next)=>{
+  req.session.userLogin = null;
+  res.redirect('/')
+}
