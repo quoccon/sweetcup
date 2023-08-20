@@ -13,26 +13,26 @@ var fs = require('fs');
 exports.add= async(req, res, next)=>{
     let msg='';
     console.log(req.file, req.body);
-    let listCat = await myMD.catModel.find();
+    // let listCat = await myMD.catModel.find();
     if(req.method=='POST'){
 
-        fs.rename(req.file.path,
-            './public/templates/'+ req.file.originalname,
-            (err)=>{
-               if(err)
-                   console.log(err);
-               else{
-                   // không có lỗi, tạo url, bỏ chữ public/
-               console.log("Url: http://localhost:3000/templates/" +req.file.originalname );
-               }
-            }) 
+        // fs.rename(req.file.path,
+        //     './public/templates/'+ req.file.originalname,
+        //     (err)=>{
+        //        if(err)
+        //            console.log(err);
+        //        else{
+        //            // không có lỗi, tạo url, bỏ chữ public/
+        //        console.log("Url: http://localhost:3000/templates/" +req.file.originalname );
+        //        }
+        //     }) 
 
-            let objSP= new myMD.spModel();
-            objSP.name= req.body.name;
+            let objSP= new myMD.productModel();
+            objSP.nameproduct= req.body.name;
             objSP.price= req.body.price;
-            objSP.description= req.body.description;
-            objSP.image= "http://localhost:3000/templates/"+req.file.originalname ;
-            objSP.id_cat= req.body.category;
+            // objSP.description= req.body.description;
+            // objSP.image= "http://localhost:3000/templates/"+req.file.originalname ;
+            // objSP.id_cat= req.body.category;
             
             try {
                 let new_sp= await objSP.save();
@@ -45,14 +45,21 @@ exports.add= async(req, res, next)=>{
             }
         }
 
-        
     
 
-
-    res.render('products/addProduct', {msg:msg, listCat:listCat});
+    res.render('products/product', {msg:msg});
 };
 
 
-// exports.deleteProduct = () => {
+exports.deleteProduct = async (req, res, next) => {
+    var idPro = req.params.idPro;
+    console.log(idPro);
 
-// }
+
+    try {
+        await myMD.productModel.findOne({_id:idPro})
+        res.redirect('/product')
+    } catch (error) {
+        console.log(error);
+    }
+}

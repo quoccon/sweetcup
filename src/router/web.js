@@ -1,5 +1,4 @@
-import express, { Router } from "express";
-import homeCtroll from "../controller/home.controller"; 
+import express from "express";
 var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
 var checkLogin = require('../middleware/checkLogin')
@@ -21,12 +20,8 @@ const initWebRouter = (app) =>{
     // ==============auth Router===========================
     router.get("/",userCtro.login);
     router.post("/", userCtro.login);
-    router.get('/reg',userCtro.reg);
-    router.post('/reg',userCtro.reg);
-    router.post('/loguot',userCtro.logUot)
     router.get("/home",checkLogin.ycLogin, homeCtroll.handelHelloWorld);
     router.get("/home-tam",homeCtroll.handelUserPage);
-    // ==============User Router===========================
     router.get("/user",userCtro.getAllUsers);
     router.post("/user/submit-form",objUpload.single("avata"),userCtro.addUser);
     router.post("/user/dele-user/:idu",userCtro.deleteU);
@@ -38,8 +33,13 @@ const initWebRouter = (app) =>{
     
 
 
+
     //product
     router.get("/product",productCtroll.getListProduct);
+    router.get('/addProduct',productCtroll.add);
+    router.post("/product.create-product",productCtroll.add)
+    router.post("/product/delete-product:idSp",productCtroll.deleteProduct);
+
     return app.use("/",router);
 }
 
