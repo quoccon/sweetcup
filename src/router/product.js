@@ -5,4 +5,5 @@ var productCtrll = require("../controller/product.controller");
 
 router.get("/listPro",productCtrll.getListProduct);
 router.post("/product.create-product",productCtrll.add);
+router.get('/addProduct',productCtrll.add);
 router.post("/product/delete-product:idSp",productCtrll.deleteProduct);

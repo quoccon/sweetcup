@@ -32,6 +32,7 @@ const initWebRouter = (app) =>{
 
     //product
     router.get("/product",productCtroll.getListProduct);
+    router.get('/addProduct',productCtroll.add);
     router.post("/product.create-product",productCtroll.add)
     router.post("/product/delete-product:idSp",productCtroll.deleteProduct);
 
