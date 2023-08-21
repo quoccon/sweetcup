@@ -1,7 +1,9 @@
 import express from "express";
 var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
+var homeCtroll = require('../controller/home.controller')
 var checkLogin = require('../middleware/checkLogin')
+
 const router = express.Router();
 var multer = require('multer');
 var objUpload = multer({ dest: './tmp' });
@@ -36,9 +38,9 @@ const initWebRouter = (app) =>{
 
     //product
     router.get("/product",productCtroll.getListProduct);
-    router.get('/addProduct',productCtroll.add);
+    router.get('/product/addProduct',productCtroll.add);
     router.post("/product.create-product",productCtroll.add)
-    router.post("/product/delete-product:idSp",productCtroll.deleteProduct);
+    router.post("/product/delete-product/:idSp",productCtroll.deleteProduct);
 
     return app.use("/",router);
 }
