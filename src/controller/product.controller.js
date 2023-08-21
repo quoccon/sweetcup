@@ -1,4 +1,5 @@
 // const { method } = require('bluebird');
+const path = require('path');
 const myMD = require('../Model/productModel');
 
 
@@ -14,50 +15,66 @@ exports.add= async(req, res, next)=>{
     let msg='';
     console.log(req.file, req.body);
     // let listCat = await myMD.catModel.find();
-    if(req.method=='POST'){
+    if(req.method =="POST"){
+            if(req.body.image != null){
+                const destinationPath = path.join(
+                    __dirname,
+                    "../public/templates"
+                );
+                const tempFilePath = req.file.path;
 
-        // fs.rename(req.file.path,
-        //     './public/templates/'+ req.file.originalname,
-        //     (err)=>{
-        //        if(err)
-        //            console.log(err);
-        //        else{
-        //            // không có lỗi, tạo url, bỏ chữ public/
-        //        console.log("Url: http://localhost:3000/templates/" +req.file.originalname );
-        //        }
-        //     }) 
-
-            let objSP= new myMD.productModel();
-            objSP.nameproduct= req.body.name;
-            objSP.price= req.body.price;
-            // objSP.description= req.body.description;
-            // objSP.image= "http://localhost:3000/templates/"+req.file.originalname ;
+                fs.rename(
+                    tempFilePath,
+                    path.join(destinationPath, req.file.originalname),
+                    (err) => {
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(
+                                "Url: http://localhost:8080/templates/" +req.file.originalname+ "success"
+                            );
+                        }
+                    }
+                );
+            }
+            var objSP= new myMD.productModel();
+            objSP.nameproduct= req.body.nameproduct;
+            objSP.price = req.body.price;
+            objSP.description= req.body.description;
+            if(req.body.image != null){
+                objSP.image= "http://localhost:8080/templates/"+req.file.originalname ;
+            }
             // objSP.id_cat= req.body.category;
             
-            try {
-                let new_sp= await objSP.save();
-                console.log(new_sp);
-                msg="Đã thêm thành công";
-                
-            } catch (error) {
-                msg="Lỗi :"+error.message;
-                console.log(error);
+            if(objSP.nameproduct & objSP.price & objSP.description & objSP.image == null){
+                try {
+                    let new_sp= await objSP.save();
+                    console.log(new_sp);
+                    msg="Đã thêm thành công";
+                    
+                } catch (error) {
+                    msg="Lỗi :"+error.message;
+                    console.log(error);
+                }
+            }else{
+                console.log("Lỗi");
             }
+            
         }
 
     
 
-    res.render('products/product', {msg:msg});
+        res.redirect("/product");
 };
 
 
 exports.deleteProduct = async (req, res, next) => {
-    var idPro = req.params.idPro;
+    var idPro = req.params.idSp;
     console.log(idPro);
 
 
     try {
-        await myMD.productModel.findOne({_id:idPro})
+        await myMD.productModel.deleteOne({_id:idPro})
         res.redirect('/product')
     } catch (error) {
         console.log(error);

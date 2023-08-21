@@ -2,10 +2,10 @@ var db = require('./db');
 
 const productSchema = new db.mongoose.Schema(
     {
-        nameproduct :{type:String, required:true},
-        image:{type:String,required:false},
-        price:{type:Number, required:true},
-        description:{type:String, required:true},
+        nameproduct :{type:String, require:true},
+        image:{type:String,require:false},
+        price:{type:Number, require:true},
+        description:{type:String, require:true},
 
     },{
         collection:"product"

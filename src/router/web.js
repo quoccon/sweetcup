@@ -43,9 +43,9 @@ const initWebRouter = (app) =>{
 
     //product
     router.get("/product",productCtroll.getListProduct);
-    router.get('/addProduct',productCtroll.add);
+    router.get('/product/addProduct',productCtroll.add);
     router.post("/product.create-product",productCtroll.add)
-    router.post("/product/delete-product:idSp",productCtroll.deleteProduct);
+    router.post("/product/delete-product/:idSp",productCtroll.deleteProduct);
 
     return app.use("/",router);
 }
