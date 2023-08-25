@@ -106,16 +106,18 @@ exports.addUser = async (req, res, next) => {
     }
     else { objU.avata = "http://localhost:8080/templates/" + avataDeffut; }
    
-    
-
-    try {
-      let new_user = await objU.save();
-      console.log(new_user);
-      msg = "Đã Thêm Người Dùng Mới Thành Công";
-    } catch (error) {
-      console.log(error);
-      msg = " lỗi" + error;
+    if (req.body.username && req.body.email && req.body.pwwd1 != null) {
+      try {
+        let new_user = await objU.save();
+        console.log(new_user);
+        msg = "Đã Thêm Người Dùng Mới Thành Công";
+      } catch (error) {
+        console.log(error);
+        msg = " lỗi" + error;
+      }
     }
+      else(console.log("Chưa điền đủ thông tin"))
+    
   }
 
   res.redirect("/user");
