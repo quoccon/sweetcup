@@ -2,7 +2,7 @@ var myMD = require('../../Model/userModel');
 var objReturn = {
 
     status : 1,
-    msg : 'oke',
+    msg : ' ',
     info_user: " "
 
 }
@@ -17,9 +17,11 @@ exports.api_Login = async (req,res,next) => {
           console.log("Đăng Nhập vào tk:" + req.session.userLogin.username);
           objReturn.status = 0;
           objReturn.msg = "Đăng nhập thành công"
-          objReturn.info_user = req.session.userLogin.username
+          objReturn.info_user = objU
+
         } else {
           objReturn.msg = "Sai Mật Khẩu";
+          objReturn.status = 1
           console.log("Đăng Nhập Lỗi" + req.body.passwd + "=" + objU.password);
         }
       } else {
