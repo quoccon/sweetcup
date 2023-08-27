@@ -46,12 +46,12 @@
           <div class="mb-3 d-flex justify-content-center" style="flex-direction:column;align-items: center;">
             <label for="avata-user" class="form-label">Image Product</label>
             <div class="avatar-upload">
-              <input type="file" name="avata" id="avata" class="d-none"  onchange="showImagePreview(this)" />
+              <input type="file" name="avata" id="avata" class="d-none"  onchange="showImage(this)" />
               <label for="avata" class="avatar-placeholder">
                 <img
                   src="https://img.freepik.com/premium-vector/abyssinian-cat-head-avata_73950-151.jpg"
                   alt="Hình ảnh"
-                  id="avata-preview"
+                  id="image-product"
                   style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
                 />
               </label>
@@ -115,6 +115,7 @@
                     <th scope="col">ProductName</th>
                     <th scope="col">Price</th>
                     <th scope="col">Image</th>
+                    <th scope="col">Description</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -125,8 +126,13 @@
                             <td><%= item.nameproduct %> </td>
                             <td><%= item.price %> </td>
                             <td><%= item.image %> </td>
+                            <td><%= item.description %> </td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
+                                <button class="btn btn-warning"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editPro-btn"
+                                        data-bs-whatever="@getbootstrap">Edit</button>
                                 <form action="/product/delete-product/<%=item._id%>" 
                                       method="POST"
                                       type="submit"
@@ -137,6 +143,99 @@
                                 </form>
                             </td>
                         </tr>
+
+                      <!--  -->
+                        <div
+                        class="modal fade"
+                        id="editPro-btn"
+                        tabindex="-1"
+                        aria-labelledby="editPro-btn"
+                        aria-hidden="true"
+                      >
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="editU-btn">
+                                Product information
+                              </h1>
+                              <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                              ></button>
+                            </div>
+                            <div class="modal-body">
+                              <form
+                                method="post"
+                                action="/product/edit-product/<%= item.id %>"
+                                enctype="multipart/form-data"
+                              >
+                              <div class="mb-3 d-flex justify-content-center" style="flex-direction:column;align-items: center;">
+                                <label for="avata-user" class="form-label">Avata</label>
+                                <div class="avatar-upload">
+                                  <input type="file" name="avata" id="avata" class="d-none" />
+                                  <label for="avata" class="avatar-placeholder">
+                                    <img
+                                      src="https://img.freepik.com/premium-vector/abyssinian-cat-head-avata_73950-151.jpg"
+                                      alt="Hình ảnh"
+                                      id="image-product"
+                                      style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
+                                    />
+                                  </label>
+                                </div>
+                              </div>
+                                <div class="mb-3">
+                                  <label for="recipient-name" class="col-form-label"
+                                    >Product Name</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="recipient-name"
+                                    name="productname"
+                                  />
+                                </div>
+                                <div class="mb-3">
+                                  <label for="message-text" class="col-form-label"
+                                    >Price</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="recipient-name"
+                                    name="price"
+                                  />
+                                </div>
+                                <div class="mb-3">
+                                  <label for="message-text" class="col-form-label"
+                                    >Description</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    id="recipient-name"
+                                    name="pwwd1"
+                                  />
+                                </div>
+                              
+                                <div class="modal-footer">
+                                  <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                  >
+                                    Hủy
+                                  </button>
+                                  <button type="submit" class="btn btn-primary">
+                                    Edit
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 <%}) %>
                
             </tbody>
@@ -144,4 +243,21 @@
     </div>
 </div>
 </div>
+
+<script>
+  function showImage(input){
+    const imageProduct = document.getElementById('image-product');
+    const selectedFile = input.file[0];
+
+    if(selectedFile){
+      const reader = new FileReader();
+
+      reader.onload = function(event){
+        imageProduct.src = event.target.result;
+      };
+
+      reader.readAsDataURL(selectedFile);
+    }
+  }
+</script>
 <%- include('../inc/footer.ejs') %>

@@ -4,7 +4,7 @@ var productCtroll = require('../controller/product.controller');
 var homeCtroll = require('../controller/home.controller')
 var checkLogin = require('../middleware/checkLogin')
 var apiU = require('../controller/API/use.api')
-
+var apiProduct = require('../controller/API/product.api')
 const router = express.Router();
 var multer = require('multer');
 var objUpload = multer({ dest: './tmp' });
@@ -43,10 +43,10 @@ const initWebRouter = (app) =>{
 
     //product
     router.get("/product",productCtroll.getListProduct);
-    // router.get('/product/addProduct',productCtroll.add);
-    router.post("/product/create-product",objUpload.single("avata"),productCtroll.add)
+    router.post("/product/edit-product/:idSp",objUpload.single("avata"),productCtroll.editPro);
+    router.post("/product/create-product",objUpload.single("avata"),productCtroll.add);
     router.post("/product/delete-product/:idSp",productCtroll.deleteProduct);
-
+    router.get('/api/product',apiProduct.api_ListProduct)
     return app.use("/",router);
 }
 
