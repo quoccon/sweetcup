@@ -2,10 +2,38 @@ var myMD = require('../../Model/userModel');
 var objReturn = {
 
     status : 1,
-    msg : 'oke'
+    msg : ' ',
+    info_user: " "
 
 }
+exports.api_Login = async (req,res,next) => {
+  if (req.method == "POST") {
+    try {
+      let objU = await myMD.userModel.findOne({ username: req.body.username });
+      console.log(objU);
+      if (objU != null) {
+        if (objU.password == req.body.passwd) {
+          req.session.userLogin = objU;
+          console.log("Đăng Nhập vào tk:" + req.session.userLogin.username);
+          objReturn.status = 0;
+          objReturn.msg = "Đăng nhập thành công"
+          objReturn.info_user = objU
 
+        } else {
+          objReturn.msg = "Sai Mật Khẩu";
+          objReturn.status = 1
+          console.log("Đăng Nhập Lỗi" + req.body.passwd + "=" + objU.password);
+        }
+      } else {
+        objReturn.msg = "Không có thông tin người dùng ";
+      }
+    } catch (error) {
+      objReturn.msg = "Lỗi : " + error.message;
+      console.log(error);
+    }
+  }
+  res.json(objReturn)
+}
 exports.api_listU = async (req,res,next) => {
     let listU =[]
     try {

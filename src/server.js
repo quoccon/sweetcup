@@ -6,6 +6,7 @@ require("dotenv").config();
 import bodyParser from "body-parser";
 
 const session = require('express-session');
+const cors = require('cors')
 
 
 
@@ -23,6 +24,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true
   }));
+
 
 app.use('/api', apiRouter );
 app.use(function(err, req, res, next) {

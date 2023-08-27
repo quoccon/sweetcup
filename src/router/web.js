@@ -33,6 +33,10 @@ const initWebRouter = (app) =>{
     router.get("/api/user",apiU.api_listU);
     router.post("/api/reg",apiU.api_Reg);
     router.post("/api/editU/:idu",apiU.api_edit);
+    router.post("/api/login",apiU.api_Login);
+    router.get("/api/login",apiU.api_Login);
+    
+
 
     
     
