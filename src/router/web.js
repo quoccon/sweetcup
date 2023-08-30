@@ -5,6 +5,7 @@ var homeCtroll = require('../controller/home.controller')
 var checkLogin = require('../middleware/checkLogin')
 var apiU = require('../controller/API/use.api')
 var apiProduct = require('../controller/API/product.api')
+var catPro = require('../controller/catPro.controller');
 const router = express.Router();
 var multer = require('multer');
 var objUpload = multer({ dest: './tmp' });
@@ -51,6 +52,10 @@ const initWebRouter = (app) =>{
     router.post("/product/create-product",objUpload.single("avata"),productCtroll.add);
     router.post("/product/delete-product/:idSp",productCtroll.deleteProduct);
     router.get('/api/product',apiProduct.api_ListProduct)
+
+    // thể loại
+    router.get("/catPro",catPro.getListCat);
+    router.get('/api/listCat',apiProduct.api_ListCat);
     return app.use("/",router);
 }
 
