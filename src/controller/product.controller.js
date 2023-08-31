@@ -49,7 +49,7 @@ exports.add = async (req, res, next) => {
     if (req.body.image != null) {
       objSP.image = "http://localhost:8080/templates/" + req.file.originalname;
     }
-    // objSP.id_cat= req.body.category;
+    objSP.id_cat= req.body.category;
 
     
       try {
