@@ -7,7 +7,7 @@ var objReturn = {
 exports.api_Login = async (req, res, next) => {
   if (req.method == "POST") {
     try {
-      let objU = await myMD.userModel.findOne({ username: req.body.username });
+      let objU = await myMD.userModel.findOne({ username: req.body.username, status: 1 });
       console.log(objU);
       if (objU != null) {
         if (objU.password == req.body.passwd) {
@@ -75,6 +75,9 @@ exports.api_Reg = async (req, res, next) => {
           objU.phone = req.body.phone;
           objU.password = req.body.passwd;
           objU.email = req.body.email;
+          objU.status = 1; // Người dùng đang kích hoạt
+          objU.role = 1;/// User
+
 
           await objU.save();
           console.log("Oke");
