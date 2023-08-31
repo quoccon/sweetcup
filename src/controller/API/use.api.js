@@ -22,7 +22,8 @@ exports.api_Login = async (req, res, next) => {
           console.log("Đăng Nhập Lỗi" + req.body.passwd + "=" + objU.password);
         }
       } else {
-        objReturn.msg = "Không có thông tin người dùng ";
+        objReturn.msg = "Không có thông tin người dùng " + req.body.passwd + req.body.username;
+        
       }
     } catch (error) {
       objReturn.msg = "Lỗi : " + error.message;
