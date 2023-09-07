@@ -21,7 +21,7 @@ exports.add = async (req, res, next) => {
   
   // let listCat = await myMD.catModel.find();
   if (req.method == "POST") {
-    console.log(req.body.nameproduct);
+    console.log(req.body.image);
     if (req.body.image != null) {
       const destinationPath = path.join(__dirname, "../public/templates");
       const tempFilePath = req.file.path;
@@ -41,6 +41,8 @@ exports.add = async (req, res, next) => {
           }
         }
       );
+    }else{
+      console.log("deo duoc");
     }
     var objSP = new myMD.productModel();
     objSP.nameproduct = req.body.nameproduct;
@@ -48,6 +50,8 @@ exports.add = async (req, res, next) => {
     objSP.description = req.body.description;
     if (req.body.image != null) {
       objSP.image = "http://localhost:8080/templates/" + req.file.originalname;
+    }else{
+      console.log("dsdsd");
     }
     objSP.id_cat= req.body.category;
 
@@ -110,7 +114,7 @@ exports.editPro = async (req,res,next)=>{
     objPro.nameproduct = req.body.nameproduct;
     objPro.price = req.body.price;
     objPro.description = req.body.description;
-    objPro.avata = "http://localhost:8080/templates/" + req.file.originalname;
+    objPro.image = "http://localhost:8080/templates/" + req.file.originalname;
     objPro._id= idSp;
 
     try {

@@ -1,15 +1,16 @@
 var myMD = require('../../Model/productModel');
 var objReturn ={
+    product:"",
     status :1,
     msg :'okai'
 }
 
 exports.api_ListProduct = async (req,res,next) => {
-    let listProduct = []
+    // let listProduct = []
     try {
-        listProduct = await myMD.productModel.find()
+        var listProduct = await myMD.productModel.find()
         if(listProduct.length > 0){
-            objReturn.data = listProduct;
+            objReturn.product = listProduct;
         }else{
             objReturn.status = 0;
             objReturn.msg = "Khong co du lieu"
@@ -36,4 +37,8 @@ exports.api_ListCat = async (req,res,next) =>{
     }
 
     res.json(objReturn);
+}
+
+exports.api_createProduct = (req,res,next) => {
+    
 }
