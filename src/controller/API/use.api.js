@@ -7,7 +7,7 @@ var objReturn = {
 exports.api_Login = async (req, res, next) => {
   if (req.method == "POST") {
     try {
-      let objU = await myMD.userModel.findOne({ username: req.body.username});
+      let objU = await myMD.userModel.findOne({ username: req.body.username, status: 1 });
       console.log(objU);
       if (objU != null) {
         if (objU.password == req.body.passwd) {
@@ -17,9 +17,10 @@ exports.api_Login = async (req, res, next) => {
           objReturn.msg = "Đăng nhập thành công";
           objReturn.info_user = objU;
         } else {
-          objReturn.msg = "Sai Mật Khẩu";
+          objReturn.msg = "Sai Mật Khẩu"+req.body.passwd;
           objReturn.status = 1;
           console.log("Đăng Nhập Lỗi" + req.body.passwd + "=" + objU.password);
+          console.log(objU);
         }
       } else {
         objReturn.msg = "Không có thông tin người dùng " + req.body.passwd + req.body.username;
