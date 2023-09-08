@@ -1,6 +1,6 @@
 import express from "express";
-import configViewEngine from "./configs/viewEngine";
-import initWebRouter from "./router/web";
+import configViewEngine from "./src/configs/viewEngine";
+import initWebRouter from "./src/router/web";
 
 require("dotenv").config();
 import bodyParser from "body-parser";
@@ -15,7 +15,7 @@ const PORT = 8080;
  
 //config view engine
 configViewEngine(app);
-var apiRouter = require('./router/api')
+var apiRouter = require('./src/router/api')
 //config body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));   
