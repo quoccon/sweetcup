@@ -7,7 +7,7 @@ var objReturn = {
 exports.api_Login = async (req, res, next) => {
   if (req.method == "POST") {
     try {
-      let objU = await myMD.userModel.findOne({ username: req.body.username });
+      let objU = await myMD.userModel.findOne({ username: req.body.username,});
       console.log(objU);
       if (objU != null) {
         if (objU.password == req.body.passwd) {
