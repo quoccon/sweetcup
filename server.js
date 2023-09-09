@@ -4,7 +4,7 @@ import initWebRouter from "./src/router/web";
 
 require("dotenv").config();
 import bodyParser from "body-parser";
-
+const storage = require('./src/Model/fireBase')
 const session = require('express-session');
 const cors = require('cors')
 
