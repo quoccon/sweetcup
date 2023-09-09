@@ -21,8 +21,8 @@ exports.add = async (req, res, next) => {
   
   // let listCat = await myMD.catModel.find();
   if (req.method == "POST") {
-    console.log(req.body.image);
-    if (req.body.image != null) {
+    console.log(req.file);
+    if (req.file != null) {
       const destinationPath = path.join(__dirname, "../public/templates");
       const tempFilePath = req.file.path;
 
