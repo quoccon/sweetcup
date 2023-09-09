@@ -55,7 +55,7 @@ exports.api_Reg = async (req, res, next) => {
   if (req.method == "POST") {
     console.log(req.body);
     let objU = await myMD.userModel.findOne({ username: req.body.username });
-    if (objU.username == req.body.username) {
+    if (objU != null) {
       objReturn.msg = "Tài Khoản này đã được đăng ký";
       console.log("Tài khoản trùng");
     }
