@@ -5,7 +5,9 @@ var homeCtroll = require('../controller/home.controller')
 var checkLogin = require('../middleware/checkLogin')
 var apiU = require('../controller/API/use.api')
 var apiProduct = require('../controller/API/product.api')
+var apiCart = require("../controller/API/cart.api");
 var catPro = require('../controller/catPro.controller');
+var cartCtroll = require("../controller/Cart.controller")
 const router = express.Router();
 var multer = require('multer');
 var objUpload = multer({ dest: './tmp' });
@@ -58,6 +60,11 @@ const initWebRouter = (app) =>{
     // thể loại
     router.get("/catPro",catPro.getListCat);
     router.get('/api/listCat',apiProduct.api_ListCat);
+    //Cart
+    router.get("/cart",cartCtroll.getListCart);
+    router.post("/cart/create-cart",objUpload.single("imagecart"),cartCtroll.addCart);
+    router.post("/cart/delete-cart/:idC",cartCtroll.deleteCart);
+    router.get("/api/cart",apiCart.api_listCart)
     return app.use("/",router);
 }
 
