@@ -20,11 +20,12 @@ exports.api_Login = async (req, res, next) => {
           objReturn.msg = "Sai Mật Khẩu"+req.body.passwd;
           objReturn.status = 1;
           console.log("Đăng Nhập Lỗi" + req.body.passwd + "=" + objU.password);
-          console.log(objU);
+          objReturn.info_user = "";
         }
       } else {
         objReturn.msg = "Không có thông tin người dùng " + req.body.passwd + req.body.username;
-        
+        objReturn.info_user = "";
+        objReturn.status = 1;
       }
     } catch (error) {
       objReturn.msg = "Lỗi : " + error.message;
