@@ -1,4 +1,4 @@
-import express from "express";
+const express = require('express') 
 var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
 var homeCtroll = require('../controller/home.controller')
@@ -68,4 +68,4 @@ const initWebRouter = (app) =>{
     return app.use("/",router);
 }
 
-export default initWebRouter;
+module.exports = initWebRouter;

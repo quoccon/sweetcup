@@ -1,9 +1,9 @@
-import express from "express";
-import configViewEngine from "./src/configs/viewEngine";
-import initWebRouter from "./src/router/web";
+const express = require('express') 
+const configViewEngine = require('./src/configs/viewEngine')
+const initWebRouter = require('./src/router/web') 
 
 require("dotenv").config();
-import bodyParser from "body-parser";
+const bodyParser = require('body-parser');
 const storage = require('./src/Model/fireBase')
 const session = require('express-session');
 const cors = require('cors')
