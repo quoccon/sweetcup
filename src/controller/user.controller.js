@@ -17,6 +17,7 @@ exports.login = async (req, res, next) => {
         }
       } else {
         msg = "Không có thông tin người dùng ";
+        console.log("ko có")
       }
     } catch (error) {
       msg = "Lỗi : " + error.message;
@@ -63,6 +64,7 @@ exports.getAllUsers = async (req, res, next) => {
   res.render("../views/screens/users/list_user.ejs", { listU: listU });
 };
 var fs = require("fs");
+const { log } = require("console");
 exports.addUser = async (req, res, next) => {
   console.log("Hàm chạy");
   var msg = "";

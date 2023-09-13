@@ -4,13 +4,15 @@ var objReturn = {
   msg: " ",
   info_user: " ",
 };
+
 exports.api_Login = async (req, res, next) => {
   if (req.method == "POST") {
+    const cleanedPassword = req.body.passwd.trim();
     try {
-      let objU = await myMD.userModel.findOne({ username: req.body.username,});
+      let objU = await myMD.userModel.findOne({ username: req.body.username});
       console.log(objU);
       if (objU != null) {
-        if (objU.password == req.body.passwd) {
+        if (objU.password == cleanedPassword) {
           req.session.userLogin = objU;
           console.log("Đăng Nhập vào tk:" + req.session.userLogin.username);
           objReturn.status = 0;
@@ -19,7 +21,7 @@ exports.api_Login = async (req, res, next) => {
         } else {
           objReturn.msg = "Sai Mật Khẩu"+req.body.passwd;
           objReturn.status = 1;
-          console.log("Đăng Nhập Lỗi" + req.body.passwd + "=" + objU.password);
+          console.log("Sai mật khẩu" + req.body.passwd + "=" + objU.password);
           console.log(objU);
         }
       } else {
@@ -54,7 +56,7 @@ exports.api_Reg = async (req, res, next) => {
   if (req.method == "POST") {
     console.log(req.body);
     let objU = await myMD.userModel.findOne({ username: req.body.username });
-    if (objU.username == req.body.username) {
+    if (objU == !null) {
       objReturn.msg = "Tài Khoản này đã được đăng ký";
       console.log("Tài khoản trùng");
     }
