@@ -1,4 +1,4 @@
-import express from "express";
+const express = require('express') 
 var userCtro = require('../controller/user.controller')
 var productCtroll = require('../controller/product.controller');
 var homeCtroll = require('../controller/home.controller')
@@ -29,11 +29,11 @@ const initWebRouter = (app) =>{
     router.get("/reg",userCtro.reg)
     router.post("/reg",userCtro.reg)
     router.get("/home",checkLogin.ycLogin, homeCtroll.handelHelloWorld);
-    router.get("/user",userCtro.getAllUsers);
-    router.post("/user/submit-form",objUpload.single("avata"),userCtro.addUser);
-    router.post("/user/dele-user/:idu",userCtro.deleteU);
-    router.post("/user/edit-user/:idu",objUpload.single("avata"),userCtro.editU);
-    router.post("/user/sreach",userCtro.getAllUsers);
+    router.get("/user",checkLogin.ycLogin,userCtro.getAllUsers);
+    router.post("/user/submit-form",checkLogin.ycLogin,objUpload.single("avat"),userCtro.addUser);
+    router.post("/user/dele-user/:idu",checkLogin.ycLogin,userCtro.deleteU);
+    router.post("/user/edit-user/:idu",checkLogin.ycLogin,objUpload.single("avata"),userCtro.editU);
+    router.post("/user/sreach",checkLogin.ycLogin,userCtro.getAllUsers);
      // ==============auth Router API===========================
     router.get("/api/user",apiU.api_listU);
     router.post("/api/reg",apiU.api_Reg);
@@ -68,4 +68,4 @@ const initWebRouter = (app) =>{
     return app.use("/",router);
 }
 
-export default initWebRouter;
+module.exports = initWebRouter;

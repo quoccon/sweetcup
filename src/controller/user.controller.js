@@ -1,5 +1,8 @@
 const myMD = require("../Model/userModel");
-const path = require('path');
+const path = require("path");
+const fs = require("fs");
+const storage = require("../Model/fireBase");
+
 exports.login = async (req, res, next) => {
   let msg = " ";
   if (req.method == "POST") {
@@ -32,25 +35,23 @@ exports.reg = async (req, res, next) => {
   let msg = " ";
   if (req.method == "POST") {
     console.log(req.body);
-    //kiểm tra hợp lệ
+    // Kiểm tra tính hợp lệ của mật khẩu
     if (req.body.passwd != req.body.passwd2) {
       msg = "Xác nhận password không đúng";
       return res.render("auth/reg", { msg: msg });
     }
-    
 
-    //lưu CSDL
+    // Lưu vào CSDL
     try {
       let objU = new myMD.userModel();
       objU.username = req.body.username;
       objU.password = req.body.passwd;
       objU.email = req.body.email;
 
-
       await objU.save();
       msg = "Đăng ký thành công";
       console.log(objU);
-      res.redirect('/')
+      res.redirect("/");
     } catch (error) {
       msg = "Lỗi: " + error.message;
     }
@@ -58,82 +59,80 @@ exports.reg = async (req, res, next) => {
 
   res.render("auth/reg", { msg: msg });
 };
+
 exports.getAllUsers = async (req, res, next) => {
-  
   var listU = await myMD.userModel.find();
   res.render("../views/screens/users/list_user.ejs", { listU: listU });
 };
 var fs = require("fs");
-const { log } = require("console");
 exports.addUser = async (req, res, next) => {
-  console.log("Hàm chạy");
   var msg = "";
   var user = "";
   if (req.session.userLogin) {
     user = req.session.userLogin.username;
   }
-  if (req.method == "POST") {
 
-    if (req.body.avata != null) {
-      const destinationPath = path.join(
-        __dirname,
-        "../public/templates"
-      );
+  if (req.method == "POST") {
+    if (req.file != null) {
+      const destinationPath = path.join(__dirname, "../public/templates");
       const tempFilePath = req.file.path;
-  
-      fs.rename(
-        tempFilePath,
-        path.join(destinationPath, req.file.originalname),
-        (err) => {
-          if (err) {
-            console.log(err);
-          } else
-            console.log(
-              "Url: http://localhost:8080/templates/" +
-                req.file.originalname +
-                "Chuyển OKe"
-            );
+
+      // Đặt tên tệp và đường dẫn đích
+      const fileName = req.file.originalname;
+      const fileDestination = path.join(destinationPath, fileName);
+
+      fs.rename(tempFilePath, fileDestination, async (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(`Tải lên ảnh thành công: ${fileDestination}`);
+
+          // Tạo đường dẫn trên Firebase Storage
+          const storagePath = `avatars/${fileName}`;
+          const fileRef = storage.bucket().file(storagePath);
+
+          // Tải tệp ảnh lên Firebase Storage
+          await fileRef.save(fs.readFileSync(fileDestination));
+
+          var objU = new myMD.userModel();
+          objU.username = req.body.username;
+          objU.email = req.body.email;
+          objU.password = req.body.pwwd1;
+
+          // Lấy đường dẫn URL của ảnh
+          const downloadURL = await fileRef.getSignedUrl({
+            action: "read",
+            expires: "03-09-2100" // Ngày hết hạn URL tải xuống
+          });
+
+          objU.avata = downloadURL[0]; // Lấy URL đầu tiên
+
+          try {
+            let new_user = await objU.save();
+            console.log(new_user);
+            msg = "Đã Thêm Người Dùng Mới Thành Công";
+            res.redirect("/user");
+          } catch (error) {
+            console.log(error);
+            msg = "Lỗi: " + error.message;
+          }
         }
-      );
-    } 
-    var  avataDeffut = "8708602c898397dc25a7b4c800a1cffd.jpg"
-    
-    var objU = new myMD.userModel();
-    objU.username = req.body.username;
-    objU.email = req.body.email;
-    objU.password = req.body.pwwd1;
-   
-    if (req.body.avata !=null) {
-      objU.avata = "http://localhost:8080/templates/" + req.file.originalname;
+      });
+    } else {
+      console.log("Chưa tải lên ảnh");
     }
-    else { objU.avata = "http://localhost:8080/templates/" + avataDeffut; }
-   
-    if (req.body.username && req.body.email && req.body.pwwd1 != null) {
-      try {
-        let new_user = await objU.save();
-        console.log(new_user);
-        msg = "Đã Thêm Người Dùng Mới Thành Công";
-      } catch (error) {
-        console.log(error);
-        msg = " lỗi" + error;
-      }
-    }
-      else(console.log("Chưa điền đủ thông tin"))
-    
   }
 
   res.redirect("/user");
 };
 
 
-exports.editU = async (req,res,next)=>{
+
+exports.editU = async (req, res, next) => {
   var idu = req.params.idu;
   console.log(idu);
-  if (req.method == 'POST') {
-    const destinationPath = path.join(
-      __dirname,
-      "../public/templates"
-    );
+  if (req.method == "POST") {
+    const destinationPath = path.join(__dirname, "../public/templates");
     const tempFilePath = req.file.path;
 
     fs.rename(
@@ -155,32 +154,31 @@ exports.editU = async (req,res,next)=>{
     objU.email = req.body.email;
     objU.password = req.body.pwwd1;
     objU.avata = "http://localhost:8080/templates/" + req.file.originalname;
-    objU._id= idu;
+    objU._id = idu;
 
     try {
-      await myMD.userModel.updateOne({_id: idu},objU)
-      console.log('Update thành công')
-      res.redirect('/user')
+      await myMD.userModel.updateOne({ _id: idu }, objU);
+      console.log("Update thành công");
+      res.redirect("/user");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
   }
+};
 
-}
-
-exports.deleteU = async (req,res,next) => {
+exports.deleteU = async (req, res, next) => {
   var idu = req.params.idu;
-  console.log(idu)
+  console.log(idu);
 
   try {
-    await myMD.userModel.deleteOne({_id:idu})
-    res.redirect('/user')
+    await myMD.userModel.deleteOne({ _id: idu });
+    res.redirect("/user");
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
-exports.logUot = async(req,res,next)=>{
+};
+
+exports.logUot = async (req, res, next) => {
   req.session.userLogin = null;
-  res.redirect('/')
-}
+  res.redirect("/");
+};

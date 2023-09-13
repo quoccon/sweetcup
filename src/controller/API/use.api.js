@@ -26,7 +26,8 @@ exports.api_Login = async (req, res, next) => {
         }
       } else {
         objReturn.msg = "Không có thông tin người dùng " + req.body.passwd + req.body.username;
-        
+        objReturn.info_user = "";
+        objReturn.status = 1;
       }
     } catch (error) {
       objReturn.msg = "Lỗi : " + error.message;
@@ -56,7 +57,7 @@ exports.api_Reg = async (req, res, next) => {
   if (req.method == "POST") {
     console.log(req.body);
     let objU = await myMD.userModel.findOne({ username: req.body.username });
-    if (objU == !null) {
+    if (objU.username == req.body.username) {
       objReturn.msg = "Tài Khoản này đã được đăng ký";
       console.log("Tài khoản trùng");
     }
