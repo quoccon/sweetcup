@@ -40,7 +40,8 @@ const initWebRouter = (app) =>{
     router.post("/api/editU/:idu",apiU.api_edit);
     router.post("/api/login",apiU.api_Login);
     router.get("/api/login",apiU.api_Login);
-    
+    //=================================Nạp tiền================================
+    router.post("/api/recharge",apiU.recharge)
 
 
     

@@ -46,6 +46,7 @@ exports.reg = async (req, res, next) => {
       objU.username = req.body.username;
       objU.password = req.body.passwd;
       objU.email = req.body.email;
+      objU.balance = "0"
 
       await objU.save();
       msg = "Đăng ký thành công";
@@ -152,6 +153,7 @@ exports.addUser = async (req, res, next) => {
           objU.username = req.body.username;
           objU.email = req.body.email;
           objU.password = req.body.pwwd1;
+          objU.balance = "0"
 
           // Lấy đường dẫn URL của ảnh
           const downloadURL = await fileRef.getSignedUrl({
