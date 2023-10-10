@@ -99,7 +99,7 @@
           <th scope="row"><%= item.id %></th>
           <td><%= item.nameproduct %> </td>
           <td><%= item.price %> </td>
-          <td><img src="<%= item.image %>" alt="Product Image" style="max-width: 100px; max-height: 100px;" /> </td>
+          <td><img src="<%= item.image %>" alt="Product Image" style="max-width: 50px; max-height: 50px;" /> </td>
           <td><%= item.description %> </td>
           <td>
             <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#editPro-btn"
@@ -122,7 +122,7 @@
                   <div class="mb-3 d-flex justify-content-center" style="flex-direction: column; align-items: center;">
                     <label for="avata-product" class="form-label">Avata</label>
                     <div class="avatar-upload">
-                      <input type="file" name="avata" id="avata" class="d-none" onchange="showImage(this)"/>
+                      <input type="file" name="avata" id="avata" class="d-none" onchange="showImage(this)" />
                       <label for="avata" class="avatar-placeholder">
                         <img src="<%= item.image %>" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" />
                       </label>
@@ -130,15 +130,15 @@
                   </div>
                   <div class="mb-3">
                     <label for="productname" class="col-form-label">Product Name</label>
-                    <input type="text" class="form-control" id="productname" name="productname" />
+                    <input type="text" class="form-control" id="productname" name="productname" value="<%= item.nameproduct %>"/>
                   </div>
                   <div class="mb-3">
                     <label for="price-edit" class="col-form-label">Price</label>
-                    <input type="text" class="form-control" id="price-edit" name="price" />
+                    <input type="text" class="form-control" id="price-edit" name="price" value="<%= item.price %>"/>
                   </div>
                   <div class="mb-3">
                     <label for="description-edit" class="col-form-label">Description</label>
-                    <input type="text" class="form-control" id="description-edit" name="description" />
+                    <input type="text" class="form-control" id="description-edit" name="description" value="<%= item.description %>"/>
                   </div>
 
                   <div class="modal-footer">
