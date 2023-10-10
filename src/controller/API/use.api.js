@@ -9,7 +9,7 @@ exports.api_Login = async (req, res, next) => {
   if (req.method == "POST") {
     const cleanedPassword = req.body.passwd.trim();
     try {
-      let objU = await myMD.userModel.findOne({ username: req.body.username});
+      let objU = await myMD.userModel.findOne({ username: req.body.username }).populate('wishlist');
       console.log(objU);
       if (objU !== null) {
         if (objU.password == cleanedPassword) {
@@ -19,13 +19,16 @@ exports.api_Login = async (req, res, next) => {
           objReturn.msg = "Đăng nhập thành công";
           objReturn.info_user = objU;
         } else {
-          objReturn.msg = "Sai Mật Khẩu"+req.body.passwd;
+          objReturn.msg = "Sai Mật Khẩu" + req.body.passwd;
           objReturn.status = 1;
           console.log("Sai mật khẩu" + req.body.passwd + "=" + objU.password);
           console.log(objU);
         }
       } else {
-        objReturn.msg = "Không có thông tin người dùng " + req.body.passwd + req.body.username;
+        objReturn.msg =
+          "Không có thông tin người dùng " +
+          req.body.passwd +
+          req.body.username;
         objReturn.info_user = "";
         objReturn.status = 1;
       }
@@ -57,7 +60,7 @@ exports.api_Reg = async (req, res, next) => {
   if (req.method == "POST") {
     console.log(req.body);
     let objU = await myMD.userModel.findOne({ username: req.body.username });
-    
+
     //lưu CSDL
 
     if (
@@ -67,7 +70,7 @@ exports.api_Reg = async (req, res, next) => {
     ) {
       if (objU != null) {
         objReturn.msg = "Tài Khoản này đã được đăng ký";
-        objReturn.status = 3
+        objReturn.status = 3;
         console.log("Tài khoản trùng");
       } else {
         try {
@@ -77,9 +80,8 @@ exports.api_Reg = async (req, res, next) => {
           objU.password = req.body.passwd;
           objU.email = req.body.email;
           objU.status = 1; // Người dùng đang kích hoạt
-          objU.role = 1;/// User
-          objU.balance = "0"
-
+          objU.role = 1; /// User
+          objU.balance = "0";
 
           await objU.save();
           console.log("Oke");
@@ -147,29 +149,64 @@ exports.api_edit = async (req, res, next) => {
 };
 
 exports.recharge = async (req, res) => {
-  
   if (req.method == "POST") {
-    
     let idu = req.body._id;
-    let objU = await myMD.userModel.findOne({ _id: idu});
+    let objU = await myMD.userModel.findOne({ _id: idu });
     console.log(idu);
-     
+
     const newBalance = parseFloat(req.body.balance) + parseFloat(objU.balance);
 
-      
-      try {
-        await myMD.userModel.updateOne({_id: idu}, {balance: newBalance});
-        let objUpdate = await myMD.userModel.findOne({ _id: idu});
-        objReturn.status = 0
-        objReturn.msg = "Deposit successful"
-        
-        objReturn.info_user = objUpdate
-      } catch (error) {
-        console.log(error);
-      }
-      
-    
-  }  
-  res.json(objReturn)
-}
+    try {
+      await myMD.userModel.updateOne({ _id: idu }, { balance: newBalance });
+      let objUpdate = await myMD.userModel.findOne({ _id: idu });
+      objReturn.status = 0;
+      objReturn.msg = "Deposit successful";
 
+      objReturn.info_user = objUpdate;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  res.json(objReturn);
+};
+
+exports.addToWishlist = async (req, res) => {
+  const id = req.body._id;
+  const prodctID = req.body.prodctID;
+  try {
+    const user = await myMD.userModel.findOne({ _id: id });
+    const prodctAdded = user.wishlist.find(
+      (idp) => idp.toString() === prodctID
+    );
+    if (prodctAdded) {
+      let Upuser = await myMD.userModel.findByIdAndUpdate(
+        { _id: id },
+        { $pull: { wishlist: prodctID } },
+        {new: true }
+      );
+      res.json(Upuser)
+      
+    }else{
+      let Upuser = await myMD.userModel.findByIdAndUpdate(
+        { _id: id },
+        { $push: { wishlist: prodctID } },
+        {new: true }
+      );
+      res.json(Upuser)
+      console.log(Upuser);
+    }
+  } catch (error) {console.log(error)}
+};
+
+exports.getWishlist = async (req, res) => {
+  const idu = req.query._id;
+  console.log(idu)
+  try {
+    const findUser = await myMD.userModel.findById(idu).populate("wishlist")
+    
+    res.json(findUser.wishlist)
+  } catch (error) {
+  console.log(error)  
+  res.status(500).json({ error: 'Có lỗi xảy ra trong quá trình populate wishlist.' });  
+  }
+};

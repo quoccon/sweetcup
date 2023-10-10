@@ -42,6 +42,8 @@ const initWebRouter = (app) =>{
     router.get("/api/login",apiU.api_Login);
     //=================================Nạp tiền================================
     router.post("/api/recharge",apiU.recharge)
+    router.post("/api/addwishlist",apiU.addToWishlist)
+    router.get("/api/getWishlist",apiU.getWishlist)
 
 
     

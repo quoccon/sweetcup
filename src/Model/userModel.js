@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 var db = require("./db");
 const userSchema= new db.mongoose.Schema(
     {
@@ -10,6 +11,7 @@ const userSchema= new db.mongoose.Schema(
         balance: {type:String, require:true},
         status:{type:String,require: true},///0 là đang khóa, 1 là kích hoạt
         role:{type:String,require: true},//0 là admin, 1 là users
+        wishlist: [{type: mongoose.Schema.Types.ObjectId,ref:"productModel"}]
 
         
 
