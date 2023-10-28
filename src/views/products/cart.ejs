@@ -1,268 +1,175 @@
-  <%- include("../inc/header.ejs") %>
+<%- include('../inc/header.ejs') %>
 
-
-  <div class="container">
+<div class="container">
   <div class="row">
-      <div class="col">
-      <!-- <div class="user-infor-container">
-          <a class="btn btn-primary" href="/product/addProduct">New Product</a>
-      </div> -->
-
+    <div class="col">
       <button
-      type="button"
-      class="btn  mb-3 btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#exampleModal"
-      data-bs-whatever="@getbootstrap"
-    >
-      Add Cart
-    </button>
+        type="button"
+        class="btn mb-3 btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        data-bs-whatever="@getbootstrap"
+      >
+        Add Cart
+      </button>
+    </div>
   </div>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              Thêm Cart
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              method="post"
-              action="/cart/create-cart"
-              enctype="multipart/form-data"
-            >
-            <div class="mb-3 d-flex justify-content-center" style="flex-direction:column;align-items: center;">
-              <label for="avata-user" class="form-label">Image Product</label>
+
+  <!-- Modal for Add Product -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Thêm Sản Phẩm
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form
+            method="post"
+            action="/product/create-cart"
+            enctype="multipart/form-data"
+          >
+            <div class="mb-3 d-flex justify-content-center" style="flex-direction: column; align-items: center;">
+              <label for="imagecart" class="form-label">Image Product</label>
               <div class="avatar-upload">
-                <input type="file" name="imageproduct" id="imageproduct" class="d-none"  onchange="showImage(this)" />
-                <label for="imageproduct" class="avatar-placeholder">
+                <input type="file" name="imagecart" id="imagecart" class="d-none" onchange="showImage(this)" />
+                <label for="imagecart" class="avatar-placeholder">
                   <img
                     src="https://img.freepik.com/premium-vector/abyssinian-cat-head-avata_73950-151.jpg"
                     alt="Hình ảnh"
-                    id="image-product"
+                    id="image-cart"
                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
                   />
                 </label>
               </div>
             </div>
-              <div class="mb-3">
-                <label for="recipient-name" class="col-form-label"
-                  >ProductName</label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  id="recipient-name"
-                  name="nameproduct"
-                />
-              </div>
+            <div class="mb-3">
+              <label for="nameproduct" class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="nameproduct" name="nameproduct" />
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">Price</label>
+              <input type="number" class="form-control" id="price" name="price" />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <input type="text" class="form-control" id="description" name="description" />
+            </div>
 
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label"
-                  >Price</label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  id="recipient-name"
-                  name="price"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">Quantity</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="recipient-name"
-                  name="quantity"
-                />
-              </div>
-              
-
-        
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Hủy
-                </button>
-                <button type="submit" class="btn btn-primary">Thêm</button>
-              </div>
-            </form>
-          </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+              <button type="submit" class="btn btn-primary">Thêm</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-
-
-      <div class="table-user mt-3">
-          <h3>Table Cart</h3>
-          <table class="table table-hover table-bordered">
-              <thead>
-                  <tr>
-                      <th scope="col">ID</th>
-                      <th scope="col">ProductName</th>
-                      <th scope="col">Price</th>
-                      <th scope="col">Quatity</th>
-                      <th scope="col">Image</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <% listCart.forEach(function(item,index){ %>
-                          <tr>
-                              <th scope="row"><%= item.id %></th>
-                              <td><%= item.nameproduct %> </td>
-                              <td><%= item.price %> </td>
-                              <td><%= item.quantity %> </td>
-                              <td><%= item.image %> </td>
-                              
-                              <td>
-                                  <button class="btn btn-warning"
-                                          type="button"
-                                          data-bs-toggle="modal"
-                                          data-bs-target="#editPro-btn"
-                                          data-bs-whatever="@getbootstrap">Edit</button>
-                                  <form action="/cart/delete-cart/<%=item._id%>" 
-                                        method="POST"
-                                        type="submit"
-                                        style="display: inline;">
-                                      <button class="btn btn-danger">
-                                          Delete
-                                      </button>
-                                  </form>
-                              </td>
-                          </tr>
-
-                        <!--  -->
-                          <div
-                          class="modal fade"
-                          id="editPro-btn"
-                          tabindex="-1"
-                          aria-labelledby="editPro-btn"
-                          aria-hidden="true"
-                        >
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="editU-btn">
-                                  Product information
-                                </h1>
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="modal"
-                                  aria-label="Close"
-                                ></button>
-                              </div>
-                              <div class="modal-body">
-                                <form
-                                  method="post"
-                                  action="/product/edit-product/<%= item.id %>"
-                                  enctype="multipart/form-data"
-                                >
-                                <div class="mb-3 d-flex justify-content-center" style="flex-direction:column;align-items: center;">
-                                  <label for="avata-product" class="form-label">Avata</label>
-                                  <div class="avatar-upload">
-                                    <input type="file" name="avata" id="avata" class="d-none" />
-                                    <label for="avata" class="avatar-placeholder">
-                                      <img
-                                        src="https://img.freepik.com/premium-vector/abyssinian-cat-head-avata_73950-151.jpg"
-                                        alt="Hình ảnh"
-                                        id="image-product"
-                                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"
-                                      />
-                                    </label>
-                                  </div>
-                                </div>
-                                  <div class="mb-3">
-                                    <label for="recipient-name" class="col-form-label"
-                                      >Product Name</label
-                                    >
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      id="recipient-name"
-                                      name="productname"
-                                    />
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="message-text" class="col-form-label"
-                                      >Price</label
-                                    >
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      id="recipient-name"
-                                      name="price"
-                                    />
-                                  </div>
-                                  <div class="mb-3">
-                                    <label for="message-text" class="col-form-label"
-                                      >Description</label
-                                    >
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      id="recipient-name"
-                                      name="pwwd1"
-                                    />
-                                  </div>
-                                
-                                  <div class="modal-footer">
-                                    <button
-                                      type="button"
-                                      class="btn btn-secondary"
-                                      data-bs-dismiss="modal"
-                                    >
-                                      Hủy
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">
-                                      Edit
-                                    </button>
-                                  </div>
-                                </form>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                  <%}) %>
-                
-              </tbody>
-          </table>
-      </div>
-  </div>
   </div>
 
-  <script>
-    function showImage(input){
-      const imageProduct = document.getElementById('image-product');
-      const selectedFile = input.file[0];
+  <!-- Table for displaying products -->
+  <div class="table-user mt-3">
+    <h3>Table User</h3>
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">ProductName</th>
+          <th scope="col">Price</th>
+          <th scope="col">Image</th>
+          <th scope="col">Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% listSp.forEach(function(item,index){ %>
+        <tr>
+          <th scope="row"><%= item.id %></th>
+          <td><%= item.nameproduct %> </td>
+          <td><%= item.price %> </td>
+          <td><img src="<%= item.image %>" alt="Product Image" style="max-width: 50px; max-height: 50px;" /> </td>
+          <td><%= item.description %> </td>
+          <td>
+            <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#editPro-btn"
+              data-bs-whatever="@getbootstrap">Edit</button>
+            <form action="/product/delete-product/<%=item._id%>" method="POST" type="submit" style="display: inline;">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <!--  -->
+        <div class="modal fade" id="editPro-btn" tabindex="-1" aria-labelledby="editPro-btn" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editU-btn">Product information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="post" action="/product/edit-product/<%= item.id %>" enctype="multipart/form-data">
+                  <div class="mb-3 d-flex justify-content-center" style="flex-direction: column; align-items: center;">
+                    <label for="avata-product" class="form-label">Avata</label>
+                    <div class="avatar-upload">
+                      <input type="file" name="avata" id="avata" class="d-none" onchange="showImage(this)" />
+                      <label for="avata" class="avatar-placeholder">
+                        <img src="<%= item.image %>" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" />
+                      </label>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="productname" class="col-form-label">Product Name</label>
+                    <input type="text" class="form-control" id="productname" name="productname" value="<%= item.nameproduct %>"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="price-edit" class="col-form-label">Price</label>
+                    <input type="text" class="form-control" id="price-edit" name="price" value="<%= item.price %>"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="description-edit" class="col-form-label">Description</label>
+                    <input type="text" class="form-control" id="description-edit" name="description" value="<%= item.description %>"/>
+                  </div>
 
-      if(selectedFile){
-        const reader = new FileReader();
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <%}) %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-        reader.onload = function(event){
-          imageProduct.src = event.target.result;
-        };
+<script>
+  function showImage(input) {
+    const imageProduct = document.getElementById('image-product');
+    const selectedFile = input.files[0];
 
-        reader.readAsDataURL(selectedFile);
-      }
+    if (selectedFile) {
+      const reader = new FileReader();
+
+      reader.onload = function(event) {
+        imageProduct.src = event.target.result;
+      };
+
+      reader.readAsDataURL(selectedFile);
     }
-  </script>
-  <%- include('../inc/footer.ejs') %>
+  }
+</script>
+<%- include('../inc/footer.ejs') %>
