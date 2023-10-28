@@ -1,8 +1,10 @@
 var myMD = require('../../Model/Bill.Model');
+var  myMDU = require('../../Model/userModel')
 var objReturn = {
     bill:"",
     status:1,
     msg:"okai",
+    test: " "
 }
 
 
@@ -25,23 +27,39 @@ exports.getBill = async (req,res,next) => {
 
 
 exports.addBill = async (req,res,next) => {
-    try {
-        const { selectedItems, totalCost, paymentMethod, deliveryAddress } = req.body;
-        if(!selectedItems || totalCost === undefined || !totalCost || !paymentMethod || !deliveryAddress){
-            return res.status(400).json({message :"Dữ liệu không hợp lệ"});
 
+    if (req.method == "POST") {
+        try {
+            
+            const {userId, selectedItems, totalCost, paymentMethod, deliveryAddress } = req.body;
+
+            if(!selectedItems || totalCost === undefined || !totalCost || !paymentMethod || !deliveryAddress){
+                return res.status(400).json({message :"Dữ liệu không hợp lệ"});
+    
+            }
+    
+            const newBill = new myMD.BillModel({
+                userId,
+                selectedItems,
+                totalCost,
+                paymentMethod,
+                deliveryAddress,
+            });
+    
+            await newBill.save();
+            objReturn.bill = newBill;
+
+        
+           
+            
+            await myMDU.userModel.findByIdAndUpdate({_id: req.body.userId}, {$push:{bill: newBill._id}});
+           
+
+
+        } catch (error) {
+            console.log(error);
+            console.log("Lỗi rồi");
         }
-
-        const newBill = new myMD.BillModel({
-            selectedItems,
-            totalCost,
-            paymentMethod,
-            deliveryAddress,
-        });
-
-        await newBill.save();
-    } catch (error) {
-        console.log(error);
-        console.log("Lỗi rồi");
     }
+    res.json(objReturn);
 }

@@ -56,8 +56,10 @@ const initWebRouter = (app) =>{
     router.post("/product/create-product",objUpload.single("imageproduct"),productCtroll.add);
     router.post("/product/delete-product/:idSp",productCtroll.deleteProduct);
     router.get('/api/product',apiProduct.api_ListProduct)
+
+    
     // router.get('/api/search-products',apiProduct.findProductSearch);
-    // router.get('/api/getbill',apiProduct.getBill);
+    router.get('/api/getbill',apiBill.getBill);
     // router.post('/api/addbill',apiProduct.addBill);
     router.post('/api/addbill',apiBill.addBill)
 

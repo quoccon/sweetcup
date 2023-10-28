@@ -178,6 +178,10 @@ exports.pay = async (req, res) => {
 
     const newBalance = parseFloat(objU.balance) - parseFloat(req.body.balance);
 
+    if (newBalance > 0 ) {
+      
+    }
+
     try {
       await myMD.userModel.updateOne({ _id: idu }, { balance: newBalance });
       let objUpdate = await myMD.userModel.findOne({ _id: idu });
