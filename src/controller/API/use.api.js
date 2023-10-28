@@ -170,6 +170,28 @@ exports.recharge = async (req, res) => {
   res.json(objReturn);
 };
 
+exports.pay = async (req, res) => {
+  if (req.method == "POST") {
+    let idu = req.body._id;
+    let objU = await myMD.userModel.findOne({ _id: idu });
+    console.log(idu);
+
+    const newBalance = parseFloat(objU.balance) - parseFloat(req.body.balance);
+
+    try {
+      await myMD.userModel.updateOne({ _id: idu }, { balance: newBalance });
+      let objUpdate = await myMD.userModel.findOne({ _id: idu });
+      objReturn.status = 0;
+      objReturn.msg = "Deposit successful";
+
+      objReturn.info_user = objUpdate;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  res.json(objReturn);
+};
+
 exports.addToWishlist = async (req, res) => {
   const id = req.body._id;
   const prodctID = req.body.prodctID;

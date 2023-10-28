@@ -98,7 +98,7 @@
         <tr>
           <th scope="row"><%= item.id %></th>
           <td><%= item.nameproduct %> </td>
-          <td><%= item.price %> </td>
+          <td><%= item.price %>đ </td>
           <td><img src="<%= item.image %>" alt="Product Image" style="max-width: 50px; max-height: 50px;" /> </td>
           <td><%= item.description %> </td>
           <td>
@@ -171,5 +171,7 @@
       reader.readAsDataURL(selectedFile);
     }
   }
+
+  
 </script>
 <%- include('../inc/footer.ejs') %>

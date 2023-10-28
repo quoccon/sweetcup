@@ -98,6 +98,4 @@ exports.editPro = async (req, res, next) => {
   }
 };
 
-exports.findProduct = (req, res) => {
-  
-}
+

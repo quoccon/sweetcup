@@ -6,7 +6,8 @@ var checkLogin = require('../middleware/checkLogin')
 var apiU = require('../controller/API/use.api')
 var apiProduct = require('../controller/API/product.api')
 var apiCart = require("../controller/API/cart.api");
-var catPro = require('../controller/catPro.controller');
+var apiBill = require('../controller/API/bill.api');
+// var catPro = require('../controller/catPro.controller');
 var cartCtroll = require("../controller/Cart.controller")
 const router = express.Router();
 var multer = require('multer');
@@ -44,12 +45,8 @@ const initWebRouter = (app) =>{
     router.post("/api/recharge",apiU.recharge)
     router.post("/api/addwishlist",apiU.addToWishlist)
     router.get("/api/getWishlist",apiU.getWishlist)
+    router.post("/api/pay",apiU.pay);
 
-
-    
-    
-    
-    
 
 
 
@@ -59,15 +56,20 @@ const initWebRouter = (app) =>{
     router.post("/product/create-product",objUpload.single("imageproduct"),productCtroll.add);
     router.post("/product/delete-product/:idSp",productCtroll.deleteProduct);
     router.get('/api/product',apiProduct.api_ListProduct)
+    // router.get('/api/search-products',apiProduct.findProductSearch);
+    // router.get('/api/getbill',apiProduct.getBill);
+    // router.post('/api/addbill',apiProduct.addBill);
+    router.post('/api/addbill',apiBill.addBill)
 
     // thể loại
-    router.get("/catPro",catPro.getListCat);
-    router.get('/api/listCat',apiProduct.api_ListCat);
+    // router.get("/catPro",catPro.getListCat);
+    // router.get('/api/listCat',apiProduct.api_ListCat);
     //Cart
     router.get("/cart",cartCtroll.getListCart);
     router.post("/cart/create-cart",objUpload.single("imagecart"),cartCtroll.addCart);
     router.post("/cart/delete-cart/:idC",cartCtroll.deleteCart);
     router.get("/api/cart",apiCart.api_listCart)
+
     return app.use("/",router);
 }
 
