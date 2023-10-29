@@ -47,8 +47,9 @@ const initWebRouter = (app) =>{
     router.get("/api/getWishlist",apiU.getWishlist)
     router.post("/api/pay",apiU.pay);
 
-
-
+//=================================Địa chỉ================================
+    router.post("/api/address",apiU.addAddress);
+    router.get("/api/address",apiU.getAddress);
 
     //product
     router.get("/product",productCtroll.getListProduct);

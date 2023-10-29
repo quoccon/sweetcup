@@ -1,4 +1,5 @@
 var myMD = require("../../Model/userModel");
+var myMDA = require("../../Model/Address");
 var objReturn = {
   status: 1,
   msg: " ",
@@ -236,3 +237,41 @@ exports.getWishlist = async (req, res) => {
   res.status(500).json({ error: 'Có lỗi xảy ra trong quá trình populate wishlist.' });  
   }
 };
+
+exports.addAddress = async (req, res) => {
+    if (req.method == "POST") {
+      try {
+        const {userId, location, tag} = req.body;
+        
+      let objA =  new myMDA.AddressModel({id_user : userId , tag: tag, location: location})
+      await objA.save()
+
+      console.log("Lưu ngon")
+      objReturn.info_user = objA
+
+
+
+
+      } catch (error) {
+        console.log(error);
+        console.log("Lỗi");
+      }
+
+    }
+
+res.json(objReturn)
+}
+
+exports.getAddress = async (req, res) => {
+  const idu = req.query.userId;
+  console.log(idu)
+  try {
+    const findUser = await myMDA.AddressModel.find({id_user: idu})
+    
+    res.json(findUser)
+  } catch (error) {
+  console.log(error)  
+  res.status(500).json({ error: 'Có lỗi xảy ra trong quá trình populate wishlist.' });  
+  }
+
+}
