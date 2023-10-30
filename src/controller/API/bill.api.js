@@ -37,13 +37,14 @@ exports.addBill = async (req,res,next) => {
                 return res.status(400).json({message :"Dữ liệu không hợp lệ"});
     
             }
-    
+            const createdAt = new Date();
             const newBill = new myMD.BillModel({
                 userId,
                 selectedItems,
                 totalCost,
                 paymentMethod,
                 deliveryAddress,
+                createdAt,
             });
     
             await newBill.save();
