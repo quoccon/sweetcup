@@ -57,11 +57,7 @@ exports.api_Reg = async (req, res, next) => {
   if (req.method == "POST") {
     console.log(req.body);
     let objU = await myMD.userModel.findOne({ username: req.body.username });
-    if (objU.username == req.body.username) {
-      objReturn.msg = "Tài Khoản này đã được đăng ký";
-      console.log("Tài khoản trùng");
-    }
-
+    
     //lưu CSDL
 
     if (
@@ -69,7 +65,7 @@ exports.api_Reg = async (req, res, next) => {
       req.body.email != null &&
       req.body.passwd != null
     ) {
-      if (objU.username == req.body.username) {
+      if (objU != null) {
         objReturn.msg = "Tài Khoản này đã được đăng ký";
         objReturn.status = 3
         console.log("Tài khoản trùng");
