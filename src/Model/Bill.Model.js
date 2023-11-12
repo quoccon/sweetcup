@@ -6,7 +6,8 @@ const billSchema = new db.mongoose.Schema(
         totalCost:{type:Number, require:true},
         paymentMethod:{type:String, require:true},
         deliveryAddress:{type:String, require:true},
-        userId:{type:String, require:true}
+        userId:{type:String, require:true},
+        createdAt:{type:Date, default:Date.now()},
     },{
         collection:"Bill"
     }

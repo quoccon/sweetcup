@@ -249,9 +249,6 @@ exports.addAddress = async (req, res) => {
       console.log("Lưu ngon")
       objReturn.info_user = objA
 
-
-
-
       } catch (error) {
         console.log(error);
         console.log("Lỗi");
@@ -273,5 +270,4 @@ exports.getAddress = async (req, res) => {
   console.log(error)  
   res.status(500).json({ error: 'Có lỗi xảy ra trong quá trình populate wishlist.' });  
   }
-
 }

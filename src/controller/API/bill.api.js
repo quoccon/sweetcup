@@ -10,7 +10,8 @@ var objReturn = {
 
 exports.getBill = async (req,res,next) => {
     try {
-        var listBill = await myMD.BillModel.find()
+        const userId = req.params.userId;
+        var listBill = await myMD.BillModel.find({userId: userId});
         if(listBill.length > 0) {
             objReturn.bill = listBill;
         }else {
@@ -37,13 +38,14 @@ exports.addBill = async (req,res,next) => {
                 return res.status(400).json({message :"Dữ liệu không hợp lệ"});
     
             }
-    
+            const createdAt = new Date();
             const newBill = new myMD.BillModel({
                 userId,
                 selectedItems,
                 totalCost,
                 paymentMethod,
                 deliveryAddress,
+                createdAt,
             });
     
             await newBill.save();

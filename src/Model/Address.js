@@ -5,10 +5,6 @@ const AddressSchema= new db.mongoose.Schema(
         tag:{type:String, require:true},
         location:{type:String, require:true},
         id_user:{type:String, require:true},
-        
-
-        
-
     },
     {
         collection:'Address',
