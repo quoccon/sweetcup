@@ -266,9 +266,9 @@ exports.getAddress = async (req, res) => {
   const idu = req.query.userId;
   console.log(idu)
   try {
-    const findUser = await myMDA.AddressModel.find({id_user: idu})
-    
-    res.json(findUser)
+    const findAdress = await myMDA.AddressModel.find({id_user: idu})
+    objReturn.info_user = findAdress
+    res.json(findAdress)
   } catch (error) {
   console.log(error)  
   res.status(500).json({ error: 'Có lỗi xảy ra trong quá trình populate wishlist.' });  
