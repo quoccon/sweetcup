@@ -42,3 +42,21 @@ exports.api_ListCat = async (req,res,next) =>{
 exports.api_createProduct = (req,res,next) => {
     
 }
+
+
+
+exports.findProduct = async (req, res) => {
+    const query =  req.query.q;
+    try {
+      const pro = await myMD.productModel.find({
+        $or: [
+          {nameproduct: {$regex: query,$options:'i'}},
+          {description: {$regex: query,$options:'i'}},
+        ],
+      });
+      res.json(pro);
+    } catch (error) {
+      console.log("Lỗi tìm kiếm");
+      console.log(error);
+    }
+  }

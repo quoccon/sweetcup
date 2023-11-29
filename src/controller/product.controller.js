@@ -5,7 +5,7 @@ const fs = require("fs");
 // Hiển thị danh sách sản phẩm
 exports.getListProduct = async (req, res, next) => {
   try {
-    const listSp = await myMD.productModel.find();
+    const listSp = await myMD.productModel.find();    
     console.log(listSp);
     res.render("../views/products/product.ejs", { listSp: listSp });
   } catch (error) {
@@ -97,3 +97,5 @@ exports.editPro = async (req, res, next) => {
     }
   }
 };
+
+

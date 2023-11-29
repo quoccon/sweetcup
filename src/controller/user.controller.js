@@ -47,6 +47,7 @@ exports.reg = async (req, res, next) => {
       objU.username = req.body.username;
       objU.password = req.body.passwd;
       objU.email = req.body.email;
+      objU.balance = "0"
 
       await objU.save();
       msg = "Đăng ký thành công";
@@ -80,45 +81,52 @@ exports.addUser = async (req, res, next) => {
         "../public/templates"
       );
       const tempFilePath = req.file.path;
-  
-      fs.rename(
-        tempFilePath,
-        path.join(destinationPath, req.file.originalname),
-        (err) => {
-          if (err) {
-            console.log(err);
-          } else
-            console.log(
-              "Url: http://localhost:8080/templates/" +
-                req.file.originalname +
-                "Chuyển OKe"
-            );
+
+      // Đặt tên tệp và đường dẫn đích
+      const fileName = req.file.originalname;
+      const fileDestination = path.join(destinationPath, fileName);
+
+      fs.rename(tempFilePath, fileDestination, async (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(`Tải lên ảnh thành công: ${fileDestination}`);
+
+          // Tạo đường dẫn trên Firebase Storage
+          const storagePath = `avatars/${fileName}`;
+          const fileRef = storage.bucket().file(storagePath);
+
+          // Tải tệp ảnh lên Firebase Storage
+          await fileRef.save(fs.readFileSync(fileDestination));
+
+          var objU = new myMD.userModel();
+          objU.username = req.body.username;
+          objU.email = req.body.email;
+          objU.password = req.body.pwwd1;
+
+          // Lấy đường dẫn URL của ảnh
+          const downloadURL = await fileRef.getSignedUrl({
+            action: "read",
+            expires: "03-09-2100" // Ngày hết hạn URL tải xuống
+          });
+
+          objU.avata = downloadURL[0]; // Lấy URL đầu tiên
+
+          try {
+            let new_user = await objU.save();
+            console.log(new_user);
+            msg = "Đã Thêm Người Dùng Mới Thành Công";
+            res.redirect("/user");
+          } catch (error) {
+            console.log(error);
+            msg = "Lỗi: " + error.message;
+          }
         }
-      );
-    } 
-    var  avataDeffut = "https://phongreviews.com/wp-content/uploads/2022/11/avatar-facebook-mac-dinh-8.jpg"
-    
-    var objU = new myMD.userModel();
-    objU.username = req.body.username;
-    objU.email = req.body.email;
-    objU.password = req.body.pwwd1;
-   
-    if (req.file != null) {
-      objU.avata = "http://sweetcup.store/templates/" + req.file.originalname;
+      });
+    } else {
+      console.log("Chưa tải lên ảnh");
     }
-    else { objU.avata =  avataDeffut; }
-   
-    if (req.body.username && req.body.email && req.body.pwwd1 != null) {
-      try {
-        let new_user = await objU.save();
-        console.log(new_user);
-        msg = "Đã Thêm Người Dùng Mới Thành Công";
-      } catch (error) {
-        console.log(error);
-        msg = " lỗi" + error;
-      }
-    }
-      else(console.log("Chưa điền đủ thông tin"))
+     
     
   }
 
