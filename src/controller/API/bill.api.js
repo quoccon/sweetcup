@@ -10,7 +10,8 @@ var objReturn = {
 
 exports.getBill = async (req,res,next) => {
     try {
-        var listBill = await myMD.BillModel.find()
+        const userId = req.params.userId;
+        var listBill = await myMD.BillModel.find({userId: userId});
         if(listBill.length > 0) {
             objReturn.bill = listBill;
         }else {
